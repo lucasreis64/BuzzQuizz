@@ -1,8 +1,9 @@
 let containerQuizzes = document.querySelector('.container-quizzes');
+let addButtom = document.querySelector('.quizzes-user button');
 const main = document.querySelector('.main');
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text, message;
+let image, text, id, message;
 
 quizzGet();
 
@@ -10,9 +11,13 @@ quizzGet();
 //Pega as informações sobre os quizzes na API
 function quizzGet(){
     containerQuizzes = document.querySelector('.container-quizzes');
+    addButtom = document.querySelector('.quizzes-user button');
+    
     const promise = axios.get(quizzesurl);
     promise.then(renderQuizzInfo);
     promise.catch();
+    
+    addButtom.addEventListener("click", quizzMaker);
 }
 
 //renderiza o quiz na tela principal;
@@ -23,14 +28,16 @@ function renderQuizzInfo(message){
     for (let cont = 0; cont < msg.length; cont++){
         image=msg[cont].image;
         text=msg[cont].title;
-        quizzShow(image, text);
+        id = msg[cont].id;
+        quizzShow(image, text,id);
     }
 }
 
 //cria a div que mostra o quiz na tela principal;
-function quizzShow(image,text){
+function quizzShow(image,text, id){
     const quizz = document.createElement('div');
     quizz.classList.add('quizz-show');
+    quizz.id = id;
     
     const img = document.createElement('img');
     img.src=image;
@@ -46,6 +53,8 @@ function quizzShow(image,text){
     quizz.appendChild(p);
 
     containerQuizzes.appendChild(quizz);
+    quizz.addEventListener('click', quizzDataGet);
+
 }
 
 //apaga o html do elemento escolhido pelo parametro passado;
@@ -57,4 +66,23 @@ function eraseContent(main){
 function renderMainContent(){
     main.innerHTML=mainCopy;
     quizzGet();
+}
+
+//inicia a criação do quizz;
+function quizzMaker(){
+    eraseContent(main);
+}
+
+//pega as informações do quizz especifico;
+function quizzDataGet(){
+    const quizzId = this.id;
+    const promise = axios.get(`${quizzesurl}/${quizzId}`);
+    promise.then(quizzOpening);
+}
+
+//renderiza a página do quizz;
+function quizzOpening(message){
+    eraseContent(main);
+    message = message.data;
+    main.innerHTML = 'adsfasdfasdfasdfasdfasdfasdfasdfas';
 }
