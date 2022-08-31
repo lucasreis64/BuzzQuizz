@@ -1,6 +1,8 @@
 let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
+let content = document.querySelector('.content');
 const main = document.querySelector('.main');
+
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message;
@@ -71,6 +73,9 @@ function renderMainContent(){
 //inicia a criação do quizz;
 function quizzMaker(){
     eraseContent(main);
+    content = document.querySelector('.content');
+    
+    
 }
 
 //pega as informações do quizz especifico;
@@ -86,3 +91,5 @@ function quizzOpening(message){
     message = message.data;
     main.innerHTML = 'adsfasdfasdfasdfasdfasdfasdfasdfas';
 }
+
+
