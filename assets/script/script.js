@@ -2,7 +2,7 @@ let containerQuizzes = document.querySelector('.container-quizzes');
 const main = document.querySelector('.main');
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text;
+let image, text, message;
 
 quizzGet();
 
@@ -51,7 +51,6 @@ function quizzShow(image,text){
 //apaga o html do elemento escolhido pelo parametro passado;
 function eraseContent(main){
     main.innerHTML='';
-    setTimeout(renderMainContent,3000);
 }
 
 //renderiza a página principal novamente (reiniciando);
