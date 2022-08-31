@@ -6,9 +6,9 @@
     font-family: 'Roboto';
     font-weight: 400;
     align-items: center;
-    gap: 77px;
     padding-top: 146px;
     padding-bottom: 70px;
+    background-color: #FAFAFA;
 
 }
 
@@ -37,7 +37,7 @@
     flex-direction: column;
     align-items: center;
     gap: 77px;
-    display: none;
+    
     
 }
 
@@ -62,13 +62,20 @@
 }
 
 .quizzes-user button {
-    background-color: white;
+    background-color: #FAFAFA;
     width: 151px;
     height: 40px;
     border: 1px dashed #EC362D;
     border-radius: 50px;
     font-size: 21px;
     color: #EC362D;
+    transition: 0.5s;
+}
+
+.quizzes-user button:hover {
+    box-shadow: 0 6px 4px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgb(233, 233, 233);
+    cursor: pointer;
 }
 
 .all-quizzes {
@@ -165,7 +172,7 @@
     align-items: center;
 }
 
-.question-conteiner{
+.question-container{
     margin-top: 42px;
     display: flex;
     flex-direction: column;
@@ -179,7 +186,6 @@
 .question{
     width: 688.16px;
     height: 137.99px;
-    background: #434CA0; /*vai mudar no js*/
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -205,6 +211,8 @@
 }
 .answer img{
     width: 329.91px;
+    height: 175.2px;
+    object-fit: cover;
 }
 
 .answer p {
