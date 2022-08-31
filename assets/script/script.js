@@ -3,13 +3,12 @@ const main = document.querySelector('.main');
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text;
-
 quizzGet();
 
 
 //Pega as informações sobre os quizzes na API
 function quizzGet(){
-    containerQuizzes = document.querySelector('.container-quizzes');
+    containerQuizzes = document.querySelector('.container-quizzes')
     const promise = axios.get(quizzesurl);
     promise.then(renderQuizzInfo);
     promise.catch();
@@ -51,7 +50,6 @@ function quizzShow(image,text){
 //apaga o html do elemento escolhido pelo parametro passado;
 function eraseContent(main){
     main.innerHTML='';
-    setTimeout(renderMainContent,3000);
 }
 
 //renderiza a página principal novamente (reiniciando);
