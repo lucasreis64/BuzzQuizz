@@ -7,9 +7,14 @@
     font-weight: 400;
     align-items: center;
     gap: 77px;
+    padding-top: 146px;
+    padding-bottom: 70px;
 }
 
 .header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +26,8 @@
     box-sizing: border-box;
     color: white;
     background-color: #EC362D;
+    filter: drop-shadow(0 0px 4px #000000);
+    z-index: 1;
 }
 
 .main {
@@ -79,7 +86,6 @@
     flex-wrap: wrap;
     gap: 15px;
     width: 1050px;
-    box-sizing: border-box;
 }
 
 .quizz-show {
