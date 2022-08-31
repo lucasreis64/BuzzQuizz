@@ -1,19 +1,25 @@
-const containerQuizzes = document.querySelector('.container-quizzes');
-const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes'
+let containerQuizzes = document.querySelector('.container-quizzes');
+const main = document.querySelector('.main');
+const mainCopy = main.innerHTML;
+const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text;
 
 quizzGet();
 
+
+//Pega as informações sobre os quizzes na API
 function quizzGet(){
+    containerQuizzes = document.querySelector('.container-quizzes');
     const promise = axios.get(quizzesurl);
     promise.then(renderQuizzInfo);
-    promise.catch(location.reload)
+    promise.catch();
 }
 
 //renderiza o quiz na tela principal;
 function renderQuizzInfo(message){
     message=message.data;
     console.log(message);
+
     for (let cont = 0; cont < message.length; cont++){
         image=message[cont].image;
         text=message[cont].title;
@@ -38,6 +44,18 @@ function quizzShow(image,text){
     quizz.appendChild(img);
     quizz.appendChild(gradient);
     quizz.appendChild(p);
+
     containerQuizzes.appendChild(quizz);
 }
 
+//apaga o html do elemento escolhido pelo parametro passado;
+function eraseContent(main){
+    main.innerHTML='';
+    setTimeout(renderMainContent,3000);
+}
+
+//renderiza a página principal novamente (reiniciando);
+function renderMainContent(){
+    main.innerHTML=mainCopy;
+    quizzGet();
+}
