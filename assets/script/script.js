@@ -17,12 +17,12 @@ function quizzGet(){
 
 //renderiza o quiz na tela principal;
 function renderQuizzInfo(message){
-    message=message.data;
-    console.log(message);
+    msg=message.data;
+    console.log(msg);
 
-    for (let cont = 0; cont < message.length; cont++){
-        image=message[cont].image;
-        text=message[cont].title;
+    for (let cont = 0; cont < msg.length; cont++){
+        image=msg[cont].image;
+        text=msg[cont].title;
         quizzShow(image, text);
     }
 }
