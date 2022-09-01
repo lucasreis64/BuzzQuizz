@@ -107,25 +107,21 @@ function quizzOpening(message) {
     cover = message.image;
     title = message.title;
     questions = message.questions;
-
+    
     //answers = questions.answers;
-    openedQuizzShowCover(cover, title);
-    for (let i = 0; i < questions.length; i++) {
-        answers = questions[i].answers;
+    openedQuizzShowCover(cover, title); // função criar a capa do quizz
+     for (let i = 0; i < questions.length; i++) {
+        answers = questions[i].answers; 
         question = questions[i].title;
         backgroundQuestion = questions[i].color;
         child++;
-        openedQuizzShowQuestions(question, backgroundQuestion)
-
-        for (let j = 0; j < answers.length; j++) {
-            answer = answers[j].text;
-            answerImg = answers[j].image;
-            correctAnswer = answers[j].isCorrectAnswer;
-            openedQuizzShowAnswers(answer, answerImg, child);
-        }
-
+        openedQuizzShowQuestions(question, backgroundQuestion) //função criar perguntas quizz
+    
+        openedQuizzShowAnswers(answers,child);
     }
 }
+
+
 const quizzCover = document.querySelector('.quizz-cover');
 //criação da capa do quizz
 function openedQuizzShowCover(cover, title) {
@@ -162,11 +158,40 @@ function openedQuizzShowQuestions(question, backgroundQuestion) {
 
 }
 //criação das respostas do quizz
-function openedQuizzShowAnswers(answer, answerImg, child) {
-    let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
+function openedQuizzShowAnswers(answers,child) {
+    let answersDiv= document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    answers.sort(()=> Math.random() - 0.5);
 
+    for(let i=0; i<answers.length;i++){
     const answerDiv = document.createElement('div');
     answerDiv.classList.add('answer');
+    answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
+    /*if (answersArray[i].isCorrectAnswer === true){
+        answerDiv.classList.add('true');
+    }else{
+        answerDiv.classList.add('false');
+    }*/
+
+    const answerImage = document.createElement('img');
+    answerImage.src = answers[i].image;
+
+    const answerP = document.createElement('p');
+    answerP.innerText = answers[i].text;
+
+    answersDiv.appendChild(answerDiv);
+    answerDiv.appendChild(answerImage);
+    answerDiv.appendChild(answerP);
+ }
+    /* const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+
+    
+
+    if (correctAnswer ===true){
+        answerDiv.classList.add('true');
+    }else{
+        answerDiv.classList.add('false');
+    }
 
     const answerImage = document.createElement('img');
     answerImage.src = answerImg;
@@ -177,5 +202,5 @@ function openedQuizzShowAnswers(answer, answerImg, child) {
 
     answersDiv.appendChild(answerDiv);
     answerDiv.appendChild(answerImage);
-    answerDiv.appendChild(answerP);
+    answerDiv.appendChild(answerP);*/
 }
