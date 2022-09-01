@@ -2,6 +2,11 @@
 @import url(quizzes.css);
 @import url(quizz_page.css);
 
+*{
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    user-select: none;
+}
 body {
     background-color: #FAFAFA;
 }

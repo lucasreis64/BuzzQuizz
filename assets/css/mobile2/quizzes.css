@@ -1,6 +1,5 @@
 .quizzes-user {
-    margin: auto;
-    width: 696px;
+    width: 100%;
     height: 180px;
     box-sizing: border-box;
     border: 1px dashed #D5D5D5;
@@ -60,14 +59,15 @@
 }
 
 .quizz-show {
+    width: 100%;
     position: relative;
     cursor: pointer;
 }
 
 .gradient {
     background-image: linear-gradient(rgba(0, 0, 0, 0)60%, rgba(0, 0, 0, 1));
-    width: 340px;
-    height: 181px;
+    width: 100%;
+    height: 53.24vw;
     border-radius: 5px;
     position: absolute;
     top: 0;
@@ -75,8 +75,8 @@
 }
 
 .quizz-show img {
-    width: 340px;
-    height: 181px;
+    width: 100%;
+    height: 53.24vw;
     border-radius: 5px;
     /* filter: brightness(95%); */
 }

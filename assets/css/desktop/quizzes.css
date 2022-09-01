@@ -57,6 +57,7 @@
 
 .quizz-show {
     position: relative;
+    cursor: pointer;
 }
 
 .gradient {
