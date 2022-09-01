@@ -145,7 +145,7 @@ const quizzQuestions = document.querySelector('.quizz-questions');
 function openedQuizzShowQuestions(question, backgroundQuestion,child) {
     const questionContainer = document.createElement('div');
     questionContainer.classList.add('question-container');
-    questionContainer.classList.add(`${child}`)
+    questionContainer.classList.add(`number${child}`)
 
     const questionTitle = document.createElement('p');
     questionTitle.classList.add('question')
@@ -187,16 +187,18 @@ function openedQuizzShowAnswers(answers,child) {
     
 }
 //------------ JOGAR O QUIZZ---------------------//
+let correctAnswer = 0;
+let contScroll=2;
 
 function playQuizz (){
    //ao clicar na resposta será referente a pergunta 
     console.log(this)
     this.classList.remove("matte")
+    this.classList.add("clicked")
 
     // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
         const quest = this.parentNode; // questão que o usuário clicou
         console.log ("quetão", quest)
-        console.log("elemento clicado",this)
     
         const matte = quest.querySelectorAll(` .matte`);
         console.log("elementos matte",matte)
@@ -210,5 +212,27 @@ function playQuizz (){
         const incorrect = quest.querySelectorAll(`.false p`);
         incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
     
+        if (this.classList.contains("true")){
+            correctAnswer++;
+        }
+
+setTimeout(scrollNextQuestion,2000);
+    console.log("corretas",correctAnswer)
+    if (this.classList.contains("clicked"==false)){
+        contScroll++;
+    
+    }
+    
+}
+
+
+ 
+
+
+function scrollNextQuestion(){
+    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
+    console.log("scrolllll",scrollToQuestion)
+    scrollToQuestion.scrollIntoView({behavior: "smooth", block: "center"})
+    contScroll++;
     
 }
