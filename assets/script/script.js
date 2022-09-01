@@ -96,9 +96,6 @@ let cover,
     question,
     backgroundQuestion,
     answers,
-    answer,
-    answerImg,
-    correctAnswer,
     child = 0;
 //renderiza a página do quizz;
 function quizzOpening(message) {
@@ -116,7 +113,6 @@ function quizzOpening(message) {
         backgroundQuestion = questions[i].color;
         child++;
         openedQuizzShowQuestions(question, backgroundQuestion) //função criar perguntas quizz
-    
         openedQuizzShowAnswers(answers,child);
     }
 }
@@ -166,12 +162,7 @@ function openedQuizzShowAnswers(answers,child) {
     const answerDiv = document.createElement('div');
     answerDiv.classList.add('answer');
     answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
-    /*if (answersArray[i].isCorrectAnswer === true){
-        answerDiv.classList.add('true');
-    }else{
-        answerDiv.classList.add('false');
-    }*/
-
+    
     const answerImage = document.createElement('img');
     answerImage.src = answers[i].image;
 
@@ -182,25 +173,5 @@ function openedQuizzShowAnswers(answers,child) {
     answerDiv.appendChild(answerImage);
     answerDiv.appendChild(answerP);
  }
-    /* const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
-
     
-
-    if (correctAnswer ===true){
-        answerDiv.classList.add('true');
-    }else{
-        answerDiv.classList.add('false');
-    }
-
-    const answerImage = document.createElement('img');
-    answerImage.src = answerImg;
-
-    const answerP = document.createElement('p');
-    answerP.innerText = answer;
-
-
-    answersDiv.appendChild(answerDiv);
-    answerDiv.appendChild(answerImage);
-    answerDiv.appendChild(answerP);*/
 }
