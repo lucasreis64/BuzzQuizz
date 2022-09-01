@@ -83,48 +83,53 @@ function quizzMaker() {
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
-//pega as informações do quizz especifico;
+
+//pega as informações do quizz especifico pelo ID;
 function quizzDataGet() {
     const quizzId = this.id;
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
-    promise.then(quizzOpening);
+    promise.then(quizzOpening); //se for sucesso abre o quizz
 }
 
-let cover,
-    title,
-    questions,
-    question,
-    backgroundQuestion,
-    answers,
+let cover, // variavel para a capa do quizz
+    title, // variavel para otitulo do quizz
+    questions, //variavel para todas questões do quizz
+    question, // variavel para uma questão do quizz
+    backgroundQuestion, // variavel para a cor da pergunta do quizz
+    answers,  //variavel para todas perguntas 
     child = 0;
 //renderiza a página do quizz;
-function quizzOpening(message) {
-    eraseContent(main);
-    message = message.data;
+function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
+    eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
+    message = message.data; 
     cover = message.image;
     title = message.title;
     questions = message.questions;
     
-    //answers = questions.answers;
+    const header = document.querySelector(".header")
+    header.scrollIntoView(); 
     openedQuizzShowCover(cover, title); // função criar a capa do quizz
+
+
      for (let i = 0; i < questions.length; i++) {
         answers = questions[i].answers; 
         question = questions[i].title;
         backgroundQuestion = questions[i].color;
         child++;
-        openedQuizzShowQuestions(question, backgroundQuestion) //função criar perguntas quizz
+        openedQuizzShowQuestions(question, backgroundQuestion,child) //função criar perguntas quizz
         openedQuizzShowAnswers(answers,child);
     }
 }
 
 
 const quizzCover = document.querySelector('.quizz-cover');
+
+
 //criação da capa do quizz
 function openedQuizzShowCover(cover, title) {
 
     const quizzCoverImg = document.createElement('img');
     quizzCoverImg.src = cover;
-
     const quizzTitle = document.createElement('p');
     quizzTitle.innerText = title;
 
@@ -134,11 +139,13 @@ function openedQuizzShowCover(cover, title) {
 }
 
 const quizzQuestions = document.querySelector('.quizz-questions');
+
+
 //criação das perguntas do quizz
-function openedQuizzShowQuestions(question, backgroundQuestion) {
+function openedQuizzShowQuestions(question, backgroundQuestion,child) {
     const questionContainer = document.createElement('div');
     questionContainer.classList.add('question-container');
-
+    questionContainer.classList.add(`${child}`)
 
     const questionTitle = document.createElement('p');
     questionTitle.classList.add('question')
@@ -153,6 +160,8 @@ function openedQuizzShowQuestions(question, backgroundQuestion) {
     questionContainer.appendChild(answersDiv);
 
 }
+
+
 //criação das respostas do quizz
 function openedQuizzShowAnswers(answers,child) {
     let answersDiv= document.querySelector(`.question-container:nth-child(${child}) .answers`);
@@ -161,6 +170,7 @@ function openedQuizzShowAnswers(answers,child) {
     for(let i=0; i<answers.length;i++){
     const answerDiv = document.createElement('div');
     answerDiv.classList.add('answer');
+    answerDiv.classList.add('matte');
     answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
     
     const answerImage = document.createElement('img');
@@ -172,6 +182,33 @@ function openedQuizzShowAnswers(answers,child) {
     answersDiv.appendChild(answerDiv);
     answerDiv.appendChild(answerImage);
     answerDiv.appendChild(answerP);
+    answerDiv.addEventListener('click', playQuizz);
  }
+    
+}
+//------------ JOGAR O QUIZZ---------------------//
+
+function playQuizz (){
+   //ao clicar na resposta será referente a pergunta 
+    console.log(this)
+    this.classList.remove("matte")
+
+    // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
+        const quest = this.parentNode; // questão que o usuário clicou
+        console.log ("quetão", quest)
+        console.log("elemento clicado",this)
+    
+        const matte = quest.querySelectorAll(` .matte`);
+        console.log("elementos matte",matte)
+        console.log("child",child)
+        
+        matte.forEach((matte) => matte.style.opacity = "0.3");
+  
+        const correct = quest.querySelectorAll(`.true p`);
+        correct.forEach((correct) => correct.style.color = "#009C22")
+
+        const incorrect = quest.querySelectorAll(`.false p`);
+        incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
+    
     
 }
