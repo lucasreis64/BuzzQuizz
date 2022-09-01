@@ -2,13 +2,16 @@
 @import url(quizzes.css);
 @import url(quizz_page.css);
 
+*{
+    box-sizing: border-box;
+}
 body {
+    width: auto;
     background-color: #FAFAFA;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     font-family: 'Roboto';
     font-weight: 400;
     align-items: center;
@@ -39,17 +42,11 @@ body {
 
 .main {
     width: 100%;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 77px;
-    
-    
 }
 
 .quizz-maker-container {
     margin-bottom: 500px;
-
 }
 
 .quizz-maker1,
@@ -63,7 +60,7 @@ body {
 .info {
     padding: 21px 16px;
     padding-right: 20px;
-    width: 600px;
+    width: 100px;
     height: 256px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     background-color: #FFFFFF;

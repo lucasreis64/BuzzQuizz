@@ -1,5 +1,5 @@
 .quizzes-user {
-    width: 1050px;
+    width: 100%;
     height: 180px;
     box-sizing: border-box;
     border: 1px dashed #D5D5D5;
@@ -36,12 +36,14 @@
 }
 
 .all-quizzes {
+    margin-top: 32px;
     display: flex;
     flex-direction: column;
     gap: 13px;
 }
 
 .all-quizzes h2 {
+    text-align: center;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -49,10 +51,11 @@
 }
 
 .container-quizzes {
+    align-items: center;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    width: 1050px;
 }
 
 .quizz-show {
