@@ -9,6 +9,8 @@
 }
 body {
     background-color: #FAFAFA;
+    
+    
 }
 
 .content {
@@ -20,6 +22,7 @@ body {
     padding-top: 146px;
     padding-bottom: 70px;
     background-color: #FAFAFA;
+
 }
 
 .header {
@@ -48,6 +51,8 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 77px;
+    
+    
 }
 
 .quizzes-user {
@@ -141,27 +146,7 @@ body {
 }
 
 .quizz-maker-container {
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    padding-inline: 22px;
-    padding-block: 50px;
-    z-index: 100;
-    position: fixed;
-    left: 50%;
-    top: 150%;
-    transform: translate(-50%, -50%);
-    transition: all 0.8s ease-in-out;
-}
-.shadow-show{
-    width: 100vw;
-    height: 100vh;
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 99;
-    position: fixed;
-    left: 0;
-    top: 0;
-    transition: all 0.8s linear;
+    margin-bottom: 500px;
 }
 
 .quizz-maker1,
