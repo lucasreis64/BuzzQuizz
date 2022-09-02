@@ -85,6 +85,7 @@ function quizzMaker() {
     quizzMakerOne();
     document.body.appendChild(quizzMakerBody)
     document.body.appendChild(shadowShow)
+    document.body.style.overflowY="hidden"
 }
 
 //renderiza página 1

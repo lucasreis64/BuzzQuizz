@@ -9,8 +9,7 @@
 }
 body {
     background-color: #FAFAFA;
-    
-    
+    padding-inline: 15px;
 }
 
 .content {
@@ -22,7 +21,6 @@ body {
     padding-top: 146px;
     padding-bottom: 70px;
     background-color: #FAFAFA;
-
 }
 
 .header {
@@ -51,8 +49,6 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 77px;
-    
-    
 }
 
 .quizzes-user {
