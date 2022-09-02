@@ -456,7 +456,7 @@ function playQuizz() {
     }
     setTimeout(scrollNextQuestion, 2000);
 }
-finishedQuizz ()
+setTimeout(finishedQuizz, 2000);
 }
 
 function scrollNextQuestion() {
@@ -484,10 +484,10 @@ function finishedQuizz (){
         correctPercentage()
         //condiçaõ para ver onde se enquadra nos levels
         selectLevel()
-        setTimeout(levelContainer.scrollIntoView({
+        levelContainer.scrollIntoView({
             behavior: "smooth",
             block: "center"
-        }), 5000);
+        }), 5000;
         
 }
 }
