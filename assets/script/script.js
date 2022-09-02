@@ -314,6 +314,7 @@ function quizzMakerThree() {
 
 
 
+
 // ------------------------ QUIZZ SELECIONADO --------------------------
 
 //pega as informações do quizz especifico pelo ID;
@@ -337,16 +338,19 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
     cover = message.image;
     title = message.title;
     questions = message.questions;
-
-    //answers = questions.answers;
+    
+    const header = document.querySelector(".header")
+    header.scrollIntoView(); 
     openedQuizzShowCover(cover, title); // função criar a capa do quizz
-    for (let i = 0; i < questions.length; i++) {
-        answers = questions[i].answers;
+
+
+     for (let i = 0; i < questions.length; i++) {
+        answers = questions[i].answers; 
         question = questions[i].title;
         backgroundQuestion = questions[i].color;
         child++;
-        openedQuizzShowQuestions(question, backgroundQuestion) //função criar perguntas quizz
-        openedQuizzShowAnswers(answers, child);
+        openedQuizzShowQuestions(question, backgroundQuestion,child) //função criar perguntas quizz
+        openedQuizzShowAnswers(answers,child);
     }
 }
 
@@ -392,23 +396,80 @@ function openedQuizzShowQuestions(question, backgroundQuestion,child) {
 
 
 //criação das respostas do quizz
-function openedQuizzShowAnswers(answers, child) {
-    let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
-    answers.sort(() => Math.random() - 0.5);
+function openedQuizzShowAnswers(answers,child) {
+    let answersDiv= document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    answers.sort(()=> Math.random() - 0.5);
 
-    for (let i = 0; i < answers.length; i++) {
-        const answerDiv = document.createElement('div');
-        answerDiv.classList.add('answer');
-        answerDiv.classList.add(`${answers[i].isCorrectAnswer}`)
+    for(let i=0; i<answers.length;i++){
+    const answerDiv = document.createElement('div');
+    answerDiv.classList.add('answer');
+    answerDiv.classList.add('matte');
+    answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
+    
+    const answerImage = document.createElement('img');
+    answerImage.src = answers[i].image;
 
-        const answerImage = document.createElement('img');
-        answerImage.src = answers[i].image;
+    const answerP = document.createElement('p');
+    answerP.innerText = answers[i].text;
 
-        const answerP = document.createElement('p');
-        answerP.innerText = answers[i].text;
+    answersDiv.appendChild(answerDiv);
+    answerDiv.appendChild(answerImage);
+    answerDiv.appendChild(answerP);
+    answerDiv.addEventListener('click', playQuizz);
+ }
+    
+}
+//------------ JOGAR O QUIZZ---------------------//
+let correctAnswer = 0;
+let contScroll=1;
 
-        answersDiv.appendChild(answerDiv);
-        answerDiv.appendChild(answerImage);
-        answerDiv.appendChild(answerP);
+function playQuizz (){
+   //ao clicar na resposta será referente a pergunta 
+    console.log(this)
+    this.classList.remove("matte")
+    this.classList.add("clicked")
+
+    // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
+        const quest = this.parentNode; // questão que o usuário clicou
+        console.log ("questão", quest)
+    
+        const matte = quest.querySelectorAll(` .matte`);
+        console.log("elementos matte",matte)
+        console.log("child",child)
+        
+        matte.forEach((matte) => matte.style.opacity = "0.3");
+  
+        const correct = quest.querySelectorAll(`.true p`);
+        correct.forEach((correct) => correct.style.color = "#009C22")
+
+        const incorrect = quest.querySelectorAll(`.false p`);
+        incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
+    
+        if (this.classList.contains("true")){
+            correctAnswer++;
+        }
+
+
+console.log("corretas",correctAnswer)
+if (this.classList.contains("clicked")==true){
+    contScroll++;
+}
+setTimeout(scrollNextQuestion,2000);
+
+}
+
+
+ 
+
+
+function scrollNextQuestion(){
+    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
+    console.log("scrolllll",scrollToQuestion)
+    if(contScroll > 1 && contScroll <= 3){
+        scrollToQuestion.scrollIntoView({behavior: "smooth", block: "center"})
     }
+    if(contScroll ==3){
+        contScroll = 1
+    }
+    // console.log(contScroll)
 }
