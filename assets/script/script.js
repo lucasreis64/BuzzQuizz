@@ -2,10 +2,11 @@ let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
-
+let perguntasQuizz, niveisQuizz, quizzUser = [];
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text, id, message;
+let image, text, id, message, valido, falso = 0,
+    contador = 1;
 
 
 quizzGet();
@@ -78,9 +79,240 @@ function renderMainContent() {
 function quizzMaker() {
     eraseContent(main);
     content = document.querySelector('.content');
+    quizzMakerOne();
+}
 
+//renderiza página 1
+function quizzMakerOne() {
+    content.innerHTML = `
+    <div class="quizz-maker-container">
+        <div class="quizz-maker1">
+            <h2>Comece pelo começo</h2>
+            <form action="#" onsubmit="setTimeout(quizzMakerTwo,100)">
+                <div class="info">
+                    <input type="text" placeholder="Título do seu quizz" oninput="setCustomValidity('');"
+                        maxlength="65" pattern=".{20,}" required
+                        oninvalid="this.setCustomValidity('Insira entre 20 e 65 caracteres!');">
+                    <input type="url" placeholder="URL da imagem do seu quizz" oninput="setCustomValidity('');"
+                        required oninvalid="this.setCustomValidity('Formato inválido');">
+                    <input type="number" placeholder="Quantidade de perguntas do quizz"
+                        oninput="setCustomValidity('');" min="3" required
+                        oninvalid="this.setCustomValidity('Valor mínimo= 3, apenas números inteiros.');">
+                    <input type="number" placeholder="Quantidade de níveis do quizz"
+                        oninput="setCustomValidity('');" min="2" required
+                        oninvalid="this.setCustomValidity('Valor mínimo= 2, apenas números inteiros.');">
+                </div>
+                <input type="submit" value="Prosseguir para criar perguntas">
+            </form>
+    </div>`
+}
+
+//renderiza página 2
+function quizzMakerTwo() {
+    quizzUser.title = document.querySelector('.info input:first-child').value;
+    quizzUser.image = document.querySelector('.info input:nth-child(2)').value;
+    questionsQuizz = document.querySelector('.info input:nth-child(3)').value;
+    levelsQuizz = document.querySelector('.info input:nth-child(4)').value;
+    eraseContent(content);
+
+    const questionStructure = `
+    <div class="quizz-maker-container">
+            <div class="quizz-maker2">
+                <h2>Crie suas perguntas</h2>
+                <form action="#" onsubmit="setTimeout(quizzMakerThree,100)">
+                </form>
+            </div>
+    </div>
+    `
+
+    content.innerHTML = questionStructure;
+    const form = document.querySelector('.quizz-maker2 form');
+
+    for (let cont = 0; cont < questionsQuizz; cont++) {
+        const questionNumber = document.createElement('div');
+        const h3 = document.createElement('h3');
+        h3.innerText = `Pergunta ${cont+1}`;
+        const img = document.createElement('img');
+        img.src = `./assets/images/Vector.svg`;
+        questionNumber.classList.add('question-number');
+        questionNumber.appendChild(h3);
+        questionNumber.appendChild(img);
+        addHTML(questionNumber);
+        form.appendChild(questionNumber);
+        if (cont == 0) {
+            rewriteQuestionDivCopy(questionNumber);
+        } else {
+            img.addEventListener('click', rewriteQuestionDiv);
+        }
+    }
+    const input = document.createElement('button');
+    input.innerHTML = 'Prosseguir para criar níveis'
+    form.appendChild(input);
+    input.addEventListener('click', hiddenChecker);
+}
+
+function addAnotherAnswer() {
+    const buttonCopy = this;
+    const parent = this.parentNode;
+    const answersArray = parent.querySelectorAll('.answer');
+    this.remove();
+    const inputAnswer = document.createElement('input');
+    const inputImage = document.createElement('input');
+
+    inputAnswer.classList.add('answer');
+    inputAnswer.setAttribute("type", "text");
+    inputAnswer.setAttribute("oninput","setCustomValidity('');");
+    inputAnswer.setAttribute("placeholder", `Resposta incorreta ${answersArray.length}`);
+    inputAnswer.setAttribute("oninvalid","this.setCustomValidity('Formato inválido')");
+    
+    inputImage.classList.add('image');
+    inputImage.setAttribute("type", "text");
+    inputImage.setAttribute("oninput","setCustomValidity('');");
+    inputImage.setAttribute("placeholder", `Resposta incorreta ${answersArray.length}`);
+    inputImage.setAttribute("oninvalid","this.setCustomValidity('Formato inválido')");
+
+/*     const incorrectAnswerElement = `
+    <input class = "answer" type="text" placeholder="Resposta incorreta ${answersArray.length}" oninput="setCustomValidity('');" required
+    oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
+    <input class = "image" type="url" placeholder="URL da imagem ${answersArray.length}" oninput="setCustomValidity('');" required
+    oninvalid="this.setCustomValidity('Formato inválido')">` */
+
+    parent.appendChild(inputAnswer);
+    parent.appendChild(inputImage);
+    parent.appendChild(buttonCopy);
+    
+    if (answersArray.length===4) {
+        this.remove();
+    }
+}
+
+function hiddenChecker() {
+    if (document.querySelector('.hidden') !== null) {
+        alert('Clique nas outras perguntas para prosseguir!');
+    }
+}
+
+//adiciona elementos HTML à div da pergunta
+function addHTML(param) {
+    const h3 = param.querySelector('h3').innerText;
+    const infoHidden = document.createElement('div');
+    infoHidden.classList.add('info', 'hidden');
+    infoHidden.innerHTML += `
+        <h3>${h3}</h3>
+        <input type="text" placeholder="Texto da pergunta" oninput="setCustomValidity('');"
+            pattern=".{20,}" required
+            oninvalid="this.setCustomValidity('Insira no mínimo 20 caracteres!')">
+        <input type="text" placeholder="Cor de fundo da pergunta" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="setCustomValidity('');"
+            required oninvalid="this.setCustomValidity('Formato inválido')">
+
+        <h3>Resposta correta</h3>
+        <input type="text" class="answer" placeholder="Resposta correta" oninput="setCustomValidity('');" required
+            oninvalid="this.setCustomValidity('Texto não pode estar vazio')">
+
+        <input type="url" class="image" placeholder="URL da imagem" oninput="setCustomValidity('');" required
+            oninvalid="this.setCustomValidity('Formato inválido')">
+
+        <h3>Respostas incorretas</h3>
+        <input type="text" class="answer" placeholder="Resposta incorreta 1" oninput="setCustomValidity('');" required
+            oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
+        <input type="url" class="image" placeholder="URL da imagem 1" oninput="setCustomValidity('');" required
+            oninvalid="this.setCustomValidity('Formato inválido')">`
+    param.appendChild(infoHidden);
+    const addAnswerButton = document.createElement('div');
+    addAnswerButton.innerHTML = 'Adicione uma nova resposta';
+    addAnswerButton.classList.add('add-answer')
+    infoHidden.appendChild(addAnswerButton);
+    addAnswerButton.addEventListener('click', addAnotherAnswer);
+}
+
+//reescreve a div da pergunta
+function rewriteQuestionDiv() {
+    const box = this.parentNode;
+    console.log(box.querySelector('.hidden'));
+    const information = box.querySelector('.hidden');
+    box.removeChild(box.firstElementChild);
+    box.removeChild(box.firstElementChild);
+    box.classList.remove('question-number');
+    information.classList.remove('hidden');
+}
+//faz a msm coisa que a original
+function rewriteQuestionDivCopy(esse) {
+    const box = esse.parentNode;
+    console.log(esse.querySelector('.hidden'));
+    const information = esse.querySelector('.hidden');
+    esse.removeChild(esse.firstElementChild);
+    esse.removeChild(esse.firstElementChild);
+    esse.classList.remove('question-number');
+    information.classList.remove('hidden');
+}
+
+function getValues() {
+    let infoArray = document.querySelectorAll('.info');
+    quizzUser.questions = [{
+        title: '',
+        color: '',
+        answers: [{
+            text: '',
+            image: '',
+            isCorrectAnswer: true
+        }]
+    }];
+    let answersArray, imagesArray, inputArray;
+    for (let cont = 0; cont < questionsQuizz; cont++) {
+        const disgusting = infoArray[cont];
+        console.log('okok0');
+
+        answersArray = disgusting.querySelectorAll('.answer');
+        console.log('okok1');
+        imagesArray = disgusting.querySelectorAll('.image');
+        console.log('okok2');
+        inputArray = disgusting.querySelectorAll('input');
+
+        console.log('inputArray[0]',inputArray[0].value);
+        quizzUser.questions[cont].title = inputArray[0].value;
+        quizzUser.questions[cont].color = inputArray[1].value;
+
+        for (let cont1 = 0; cont1 < answersArray.length; cont1++) {
+            if (cont1 > 0) {
+                quizzUser.questions[cont].answers[cont1].isCorrectAnswer = false;
+            }
+            quizzUser.questions[cont].answers[cont1].text = answersArray[cont1].value;
+            quizzUser.questions[cont].answers[cont1].image = imagesArray[cont1].value;
+
+            if (cont1 < answersArray.length - 1) {
+                quizzUser.questions[cont].answers.push([{
+                    text: '',
+                    image: ''
+                }]);
+            }
+        }
+        if (cont < questionsQuizz - 1) {
+            quizzUser.questions[cont+1]={
+                answers: [{
+                    text: '',
+                    image: '',
+                    isCorrectAnswer: true
+                }]};
+        }
+    }
 
 }
+
+//renderiza página 3 do quizz
+function quizzMakerThree() {
+    getValues();
+    console.log('Hello, World');
+}
+
+
+
+
+
+
+
+
+
+
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
 
@@ -105,19 +337,16 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
     cover = message.image;
     title = message.title;
     questions = message.questions;
-    
-    const header = document.querySelector(".header")
-    header.scrollIntoView(); 
+
+    //answers = questions.answers;
     openedQuizzShowCover(cover, title); // função criar a capa do quizz
-
-
-     for (let i = 0; i < questions.length; i++) {
-        answers = questions[i].answers; 
+    for (let i = 0; i < questions.length; i++) {
+        answers = questions[i].answers;
         question = questions[i].title;
         backgroundQuestion = questions[i].color;
         child++;
-        openedQuizzShowQuestions(question, backgroundQuestion,child) //função criar perguntas quizz
-        openedQuizzShowAnswers(answers,child);
+        openedQuizzShowQuestions(question, backgroundQuestion) //função criar perguntas quizz
+        openedQuizzShowAnswers(answers, child);
     }
 }
 
@@ -163,80 +392,23 @@ function openedQuizzShowQuestions(question, backgroundQuestion,child) {
 
 
 //criação das respostas do quizz
-function openedQuizzShowAnswers(answers,child) {
-    let answersDiv= document.querySelector(`.question-container:nth-child(${child}) .answers`);
-    answers.sort(()=> Math.random() - 0.5);
+function openedQuizzShowAnswers(answers, child) {
+    let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    answers.sort(() => Math.random() - 0.5);
 
-    for(let i=0; i<answers.length;i++){
-    const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
-    answerDiv.classList.add('matte');
-    answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
-    
-    const answerImage = document.createElement('img');
-    answerImage.src = answers[i].image;
+    for (let i = 0; i < answers.length; i++) {
+        const answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+        answerDiv.classList.add(`${answers[i].isCorrectAnswer}`)
 
-    const answerP = document.createElement('p');
-    answerP.innerText = answers[i].text;
+        const answerImage = document.createElement('img');
+        answerImage.src = answers[i].image;
 
-    answersDiv.appendChild(answerDiv);
-    answerDiv.appendChild(answerImage);
-    answerDiv.appendChild(answerP);
-    answerDiv.addEventListener('click', playQuizz);
- }
-    
-}
-//------------ JOGAR O QUIZZ---------------------//
-let correctAnswer = 0;
-let contScroll=1;
+        const answerP = document.createElement('p');
+        answerP.innerText = answers[i].text;
 
-function playQuizz (){
-   //ao clicar na resposta será referente a pergunta 
-    console.log(this)
-    this.classList.remove("matte")
-    this.classList.add("clicked")
-
-    // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
-        const quest = this.parentNode; // questão que o usuário clicou
-        console.log ("questão", quest)
-    
-        const matte = quest.querySelectorAll(` .matte`);
-        console.log("elementos matte",matte)
-        console.log("child",child)
-        
-        matte.forEach((matte) => matte.style.opacity = "0.3");
-  
-        const correct = quest.querySelectorAll(`.true p`);
-        correct.forEach((correct) => correct.style.color = "#009C22")
-
-        const incorrect = quest.querySelectorAll(`.false p`);
-        incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
-    
-        if (this.classList.contains("true")){
-            correctAnswer++;
-        }
-
-
-console.log("corretas",correctAnswer)
-if (this.classList.contains("clicked")==true){
-    contScroll++;
-}
-setTimeout(scrollNextQuestion,2000);
-
-}
-
-
- 
-
-
-function scrollNextQuestion(){
-    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
-    console.log("scrolllll",scrollToQuestion)
-    if(contScroll > 1 && contScroll <= 3){
-        scrollToQuestion.scrollIntoView({behavior: "smooth", block: "center"})
+        answersDiv.appendChild(answerDiv);
+        answerDiv.appendChild(answerImage);
+        answerDiv.appendChild(answerP);
     }
-    if(contScroll ==3){
-        contScroll = 1
-    }
-    // console.log(contScroll)
 }
