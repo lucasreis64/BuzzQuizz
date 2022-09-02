@@ -39,6 +39,7 @@ function renderQuizzInfo(message) {
         id = msg[cont].id;
         quizzShow(image, text, id);
     }
+    
 }
 
 //cria a div que mostra o quiz na tela principal;
