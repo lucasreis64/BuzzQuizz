@@ -3,6 +3,7 @@ let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
 let perguntasQuizz, niveisQuizz, quizzUser = [];
+let quizzMakerBody;
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message;
@@ -76,15 +77,19 @@ function renderMainContent() {
 
 //inicia a criação do quizz;
 function quizzMaker() {
-    eraseContent(main);
-    content = document.querySelector('.content');
+    // eraseContent(main);
+    const shadowShow = document.createElement("div")
+    shadowShow.classList.add("shadow-show")
+    quizzMakerBody = document.createElement("div")
+    quizzMakerBody.classList.add("quizz-maker-container")
     quizzMakerOne();
+    document.body.appendChild(quizzMakerBody)
+    document.body.appendChild(shadowShow)
 }
 
 //renderiza página 1
 function quizzMakerOne() {
-    content.innerHTML = `
-    <div class="quizz-maker-container">
+    quizzMakerBody.innerHTML = `
         <div class="quizz-maker1">
             <h2>Comece pelo começo</h2>
             <form action="#" onsubmit="setTimeout(quizzMakerTwo,100)">
@@ -103,7 +108,7 @@ function quizzMakerOne() {
                 </div>
                 <input type="submit" value="Prosseguir para criar perguntas">
             </form>
-    </div>`
+            `
 }
 
 //renderiza página 2
@@ -469,5 +474,4 @@ function scrollNextQuestion() {
             block: "center"
         })
     }
-    // é preciso zerar o contScroll depois para outros quizzes
 }

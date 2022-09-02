@@ -146,7 +146,25 @@ body {
 }
 
 .quizz-maker-container {
-    margin-bottom: 500px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding-inline: 22px;
+    padding-block: 50px;
+    z-index: 100;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shadow-show{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    position: fixed;
+    left: 0;
+    top: 0;
 }
 
 .quizz-maker1,
