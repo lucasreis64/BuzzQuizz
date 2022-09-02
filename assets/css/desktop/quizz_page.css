@@ -3,6 +3,7 @@
     display: flex; 
     flex-direction: column;
     width: 100%;
+
 }
 
 .quizz-cover{   
@@ -91,3 +92,57 @@
     margin-top: 7px;
 }
 
+/*-------------- LEVEL------------*/
+.level-container{
+    display: flex;
+    justify-content: center;
+}
+.quizz-level{
+    margin-top: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 27px 0;
+    width: 759px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    display: none;
+}
+
+.level-title{
+    width: 688.16px;
+    height: 137.99px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background-color: #EC362D;
+    margin-bottom: 18px;
+
+}
+.level-content{
+    display: flex;
+    width: 688.16px;
+    justify-content: space-between;
+}
+.level-img {
+    width: 364px;
+    margin-right: 21px;
+}
+
+.level-text{
+    
+    font-family: 'Roboto',sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 25px;
+    color: #484848;
+    width: 328px;
+
+}

@@ -341,6 +341,7 @@ let cover, // variavel para a capa do quizz
     question, // variavel para uma questão do quizz
     backgroundQuestion, // variavel para a cor da pergunta do quizz
     answers, //variavel para todas perguntas 
+    levels, 
     contScroll,
     child = 0;
 //renderiza a página do quizz;
@@ -350,6 +351,7 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
     cover = message.image;
     title = message.title;
     questions = message.questions;
+    levels= message.levels;
 
     const header = document.querySelector(".header")
     header.scrollIntoView();
@@ -468,14 +470,13 @@ function playQuizz() {
     if (this.classList.contains("true")) {
         correctAnswer++;
     }
-
-
     console.log("corretas", correctAnswer)
     if (this.classList.contains("clicked") == true) {
         contScroll++;
     }
     setTimeout(scrollNextQuestion, 2000);
 }
+finishedQuizz ()
 }
 
 function scrollNextQuestion() {
@@ -487,4 +488,67 @@ function scrollNextQuestion() {
             block: "center"
         })
     }
+}
+
+let percentage = 0;
+function correctPercentage(){
+    percentage = (correctAnswer/child) *100;
+    percentage = Math.round(percentage);
+}
+
+const levelContainer = document.querySelector (".quizz-level");
+function finishedQuizz (){
+    const allFinishedQuestions = document.querySelectorAll(".answered-question")
+    if ( allFinishedQuestions.length === child){
+        //calcular a porcentagem
+        correctPercentage()
+        //condiçaõ para ver onde se enquadra nos levels
+        selectLevel()
+        setTimeout(levelContainer.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        }), 5000);
+        
+}
+}
+
+
+let userLevel;
+function selectLevel(){
+     for (i=0; i <levels.length; i++){   
+
+            if(percentage>= levels[i].minValue){
+                userLevel=levels[i];
+            }
+       }
+
+       renderLevel ()
+}
+
+
+let levelTitle,
+levelImage,
+levelText;
+
+function renderLevel (){
+
+   console.log ("user level",userLevel)
+   levelTitle= userLevel.title
+   levelImage = userLevel.image
+   levelText = userLevel.text
+
+   showLevel(levelTitle,levelImage,levelText)
+}
+
+// função para exibir a porcentagem e acertos
+function showLevel(levelTitle,levelImage,levelText){
+   
+    levelContainer.style.display = "flex";
+
+    levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
+    <div class = "level-content"> 
+        <img class="level-img"  src="${levelImage}">
+        <p class="level-text">  ${levelText} </p>
+    </div>`
+
 }
