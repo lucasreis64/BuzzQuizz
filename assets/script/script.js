@@ -560,6 +560,7 @@ function playQuizz() {
         }
         setTimeout(scrollNextQuestion, 2000);
     }
+   setTimeout(finishedQuizz,2000);
 }
 
 function scrollNextQuestion() {
@@ -592,7 +593,7 @@ function finishedQuizz() {
         levelContainer.scrollIntoView({
             behavior: "smooth",
             block: "center"
-        }), 5000;
+        })
 
     }
 }
@@ -602,7 +603,6 @@ let userLevel;
 
 function selectLevel() {
     for (i = 0; i < levels.length; i++) {
-
         if (percentage >= levels[i].minValue) {
             userLevel = levels[i];
         }
@@ -629,13 +629,10 @@ function renderLevel() {
 // função para exibir a porcentagem e acertos
 
 function showLevel(levelTitle,levelImage,levelText){
+    levelContainer.style.display = "flex";
    const buttons = document.querySelector (".quizz-buttons")
     buttons.style.display = "flex";
-
-
-
-    levelContainer.style.display = "flex";
-
+    
     levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
     <div class = "level-content"> 
         <img class="level-img"  src="${levelImage}">
