@@ -86,6 +86,11 @@ function quizzMaker() {
     document.body.appendChild(quizzMakerBody)
     document.body.appendChild(shadowShow)
     document.body.style.overflowY="hidden"
+    setTimeout(animateContainer, 50) 
+    function animateContainer(){
+        quizzMakerBody.style.top = "50%"
+        shadowShow.style.opacity = "1"
+    }
 }
 
 //renderiza página 1
