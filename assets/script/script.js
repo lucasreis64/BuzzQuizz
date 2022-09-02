@@ -2,7 +2,7 @@ let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
-let questionsQuizz, levelsQuizz, quizzUser={};
+let questionsQuizz, levelsQuizz, quizzUser = {};
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message;
@@ -338,14 +338,12 @@ function quizzMakerThree() {
 
 function getLevelValue() {
     let infoArray = document.querySelectorAll('.info');
-    quizzUser.levels = [
-        {
-            title: "Título do nível 1",
-            image: "https://http.cat/411.jpg",
-            text: "Descrição do nível 1",
-            minValue: 0
-        }
-    ]
+    quizzUser.levels = [{
+        title: "Título do nível 1",
+        image: "https://http.cat/411.jpg",
+        text: "Descrição do nível 1",
+        minValue: 0
+    }]
 
 
     for (let cont = 0; cont < levelsQuizz; cont++) {
@@ -363,17 +361,15 @@ function getLevelValue() {
         quizzUser.levels[cont].minValue = Number(inputArray[1].value);
         quizzUser.levels[cont].image = inputArray[2].value;
         quizzUser.levels[cont].text = inputArray[3].value;
-        
+
 
         if (cont < levelsQuizz - 1) {
-            quizzUser.levels[cont+1]=
-                {
-                    title: "Título do nível 1",
-                    image: "https://http.cat/411.jpg",
-                    text: "Descrição do nível 1",
-                    minValue: 0
-                }
-            ;
+            quizzUser.levels[cont + 1] = {
+                title: "Título do nível 1",
+                image: "https://http.cat/411.jpg",
+                text: "Descrição do nível 1",
+                minValue: 0
+            };
         }
     }
 }
@@ -399,12 +395,13 @@ function addHTMLlevel(param) {
     param.appendChild(infoHidden);
 }
 
-function quizzUserPost(){
+function quizzUserPost() {
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizzUser);
-    promise.then(tudobom());}
+    promise.then(tudobom());
+}
 
 
-function tudobom(){
+function tudobom() {
     console.log('Deu tudo certo');
 }
 
@@ -423,7 +420,7 @@ let cover, // variavel para a capa do quizz
     question, // variavel para uma questão do quizz
     backgroundQuestion, // variavel para a cor da pergunta do quizz
     answers, //variavel para todas perguntas 
-    levels, 
+    levels,
     contScroll,
     child = 0;
 //renderiza a página do quizz;
@@ -433,7 +430,7 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
     cover = message.image;
     title = message.title;
     questions = message.questions;
-    levels= message.levels;
+    levels = message.levels;
 
     const header = document.querySelector(".header")
     header.scrollIntoView();
@@ -574,15 +571,17 @@ function scrollNextQuestion() {
 }
 
 let percentage = 0;
-function correctPercentage(){
-    percentage = (correctAnswer/child) *100;
+
+function correctPercentage() {
+    percentage = (correctAnswer / child) * 100;
     percentage = Math.round(percentage);
 }
 
-const levelContainer = document.querySelector (".quizz-level");
-function finishedQuizz (){
+const levelContainer = document.querySelector(".quizz-level");
+
+function finishedQuizz() {
     const allFinishedQuestions = document.querySelectorAll(".answered-question")
-    if ( allFinishedQuestions.length === child){
+    if (allFinishedQuestions.length === child) {
         //calcular a porcentagem
         correctPercentage()
         //condiçaõ para ver onde se enquadra nos levels
@@ -591,41 +590,42 @@ function finishedQuizz (){
             behavior: "smooth",
             block: "center"
         }), 5000;
-        
-}
+
+    }
 }
 
 
 let userLevel;
-function selectLevel(){
-     for (i=0; i <levels.length; i++){   
 
-            if(percentage>= levels[i].minValue){
-                userLevel=levels[i];
-            }
-       }
+function selectLevel() {
+    for (i = 0; i < levels.length; i++) {
 
-       renderLevel ()
+        if (percentage >= levels[i].minValue) {
+            userLevel = levels[i];
+        }
+    }
+
+    renderLevel()
 }
 
 
 let levelTitle,
-levelImage,
-levelText;
+    levelImage,
+    levelText;
 
-function renderLevel (){
+function renderLevel() {
 
-   console.log ("user level",userLevel)
-   levelTitle= userLevel.title
-   levelImage = userLevel.image
-   levelText = userLevel.text
+    console.log("user level", userLevel)
+    levelTitle = userLevel.title
+    levelImage = userLevel.image
+    levelText = userLevel.text
 
-   showLevel(levelTitle,levelImage,levelText)
+    showLevel(levelTitle, levelImage, levelText)
 }
 
 // função para exibir a porcentagem e acertos
-function showLevel(levelTitle,levelImage,levelText){
-   
+function showLevel(levelTitle, levelImage, levelText) {
+
     levelContainer.style.display = "flex";
 
     levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
