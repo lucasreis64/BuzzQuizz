@@ -330,6 +330,7 @@ let cover, // variavel para a capa do quizz
     question, // variavel para uma questão do quizz
     backgroundQuestion, // variavel para a cor da pergunta do quizz
     answers, //variavel para todas perguntas 
+    contScroll,
     child = 0;
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
@@ -351,7 +352,9 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
         child++;
         openedQuizzShowQuestions(question, backgroundQuestion, child) //função criar perguntas quizz
         openedQuizzShowAnswers(answers, child);
+
     }
+    contScroll = 1
 }
 
 
@@ -421,7 +424,6 @@ function openedQuizzShowAnswers(answers, child) {
 }
 //------------ JOGAR O QUIZZ---------------------//
 let correctAnswer = 0;
-let contScroll = 1;
 
 function playQuizz() {
     //ao clicar na resposta será referente a pergunta 
@@ -461,14 +463,11 @@ function playQuizz() {
 function scrollNextQuestion() {
     let scrollToQuestion = document.querySelector(`.number${contScroll}`)
     console.log("scrolllll", scrollToQuestion)
-    if (contScroll > 1 && contScroll <= 3) {
+    if (contScroll > 1 && contScroll <= questions.length) {
         scrollToQuestion.scrollIntoView({
             behavior: "smooth",
             block: "center"
         })
     }
-    if (contScroll == 3) {
-        contScroll = 1
-    }
-    // console.log(contScroll)
+    // é preciso zerar o contScroll depois para outros quizzes
 }
