@@ -2,10 +2,11 @@ let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
-let questionsQuizz, levelsQuizz, quizzUser = {};
-const mainCopy = main.innerHTML;
+let questionsQuizz, levelsQuizz, quizzUser = {},
+    personalQuizzId = [];
+const contentCopy = content.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text, id, message;
+let image, text, id, message, returned;
 
 
 quizzGet();
@@ -60,7 +61,6 @@ function quizzShow(image, text, id) {
 
     containerQuizzes.appendChild(quizz);
     quizz.addEventListener('click', quizzDataGet);
-
 }
 
 //apaga o html do elemento escolhido pelo parametro passado;
@@ -70,7 +70,8 @@ function eraseContent(main) {
 
 //renderiza a página principal novamente (reiniciando);
 function renderMainContent() {
-    main.innerHTML = mainCopy;
+    eraseContent(content);
+    content.innerHTML = contentCopy;
     quizzGet();
 }
 
@@ -397,12 +398,67 @@ function addHTMLlevel(param) {
 
 function quizzUserPost() {
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizzUser);
-    promise.then(tudobom());
+    promise.then(quizzMakerEnd);
 }
 
+let contador = 0;
 
-function tudobom() {
-    console.log('Deu tudo certo');
+function quizzMakerEnd(response) {
+    contador++;
+    console.log("Resposta: ", response);
+    personalQuizzId[contador] = response.data.id;
+    const promise = axios.get(`${quizzesurl}/${personalQuizzId[contador]}`);
+    eraseContent(content);
+    const endStructure = `
+    <div class="quizz-maker-container">
+            <div class="quizz-end">
+                <h2>Seu quizz está pronto</h2>
+            </div>
+    </div>
+    `
+    content.innerHTML += endStructure;
+    promise.then(quizzGetbyId);
+
+}
+
+function quizzGetbyId(response){
+    response =response.data;
+    image = response.image;
+    text = response.title;
+    id = response.id;
+    quizzShowUser(image, text, id);
+}
+
+function quizzShowUser(image, text, id) {
+    const end = document.querySelector(".quizz-end");
+    const quizz = document.createElement('div');
+    quizz.classList.add('quizz-show');
+    quizz.id = id;
+
+    const img = document.createElement('img');
+    img.src = image;
+
+    const gradient = document.createElement('div');
+    gradient.classList.add('gradient');
+
+    const p = document.createElement('p');
+    p.innerText = text;
+
+    quizz.appendChild(img);
+    quizz.appendChild(gradient);
+    quizz.appendChild(p);
+
+    end.appendChild(quizz);
+    const button = document.createElement('button');
+    button.innerHTML = 'Acessar Quizz'
+    button.id=id;
+    console.log(button.id)
+    end.appendChild(button);
+    button.addEventListener('click', quizzDataGet);
+    const h4 = document.createElement('h4');
+    h4.innerText = 'Voltar para home'
+    end.appendChild(h4);
+    h4.addEventListener('click', renderMainContent);
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
@@ -426,6 +482,7 @@ let
     child = 0;
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
+    console.log("sucesso");
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
     message= message.data;
     cover = message.image;
@@ -515,7 +572,6 @@ function openedQuizzShowAnswers(answers, child) {
         answerDiv.appendChild(answerP);
         answerDiv.addEventListener('click', playQuizz);
     }
-
 }
 //------------ JOGAR O QUIZZ---------------------//
 let correctAnswer = 0;
