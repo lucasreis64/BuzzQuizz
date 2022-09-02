@@ -2,7 +2,7 @@ let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
-let perguntasQuizz, niveisQuizz, quizzUser = [];
+let questionsQuizz, levelsQuizz, quizzUser={};
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message;
@@ -276,10 +276,10 @@ function getValues() {
             quizzUser.questions[cont].answers[cont1].image = imagesArray[cont1].value;
 
             if (cont1 < answersArray.length - 1) {
-                quizzUser.questions[cont].answers.push([{
+                quizzUser.questions[cont].answers.push({
                     text: '',
                     image: ''
-                }]);
+                });
             }
         }
         if (cont < questionsQuizz - 1) {
@@ -299,12 +299,114 @@ function getValues() {
 function quizzMakerThree() {
     getValues();
     console.log('Hello, World');
+    eraseContent(content);
+    const questionStructure = `
+    <div class="quizz-maker-container">
+            <div class="quizz-maker3">
+                <h2>Agora, decida os níveis</h2>
+                <form action="#" onsubmit="getLevelValue(); setTimeout(quizzUserPost, 1000);">
+                </form>
+            </div>
+    </div>
+    `
+
+    content.innerHTML = questionStructure;
+    const form = document.querySelector('.quizz-maker3 form');
+
+    for (let cont = 0; cont < levelsQuizz; cont++) {
+        const questionNumber = document.createElement('div');
+        const h3 = document.createElement('h3');
+        h3.innerText = `Nível ${cont+1}`;
+        const img = document.createElement('img');
+        img.src = `./assets/images/Vector.svg`;
+        questionNumber.classList.add('question-number');
+        questionNumber.appendChild(h3);
+        questionNumber.appendChild(img);
+        addHTMLlevel(questionNumber);
+        form.appendChild(questionNumber);
+        if (cont == 0) {
+            rewriteQuestionDivCopy(questionNumber);
+        } else {
+            img.addEventListener('click', rewriteQuestionDiv);
+        }
+    }
+    const input = document.createElement('button');
+    input.innerHTML = 'Prosseguir para criar níveis'
+    form.appendChild(input);
+    input.addEventListener('click', hiddenChecker);
+}
+
+function getLevelValue() {
+    let infoArray = document.querySelectorAll('.info');
+    quizzUser.levels = [
+        {
+            title: "Título do nível 1",
+            image: "https://http.cat/411.jpg",
+            text: "Descrição do nível 1",
+            minValue: 0
+        }
+    ]
+
+
+    for (let cont = 0; cont < levelsQuizz; cont++) {
+        const disgusting = infoArray[cont];
+        console.log('okok0');
+
+        answersArray = disgusting.querySelectorAll('.answer');
+        console.log('okok1');
+        imagesArray = disgusting.querySelectorAll('.image');
+        console.log('okok2');
+        inputArray = disgusting.querySelectorAll('input');
+
+        console.log('inputArray[0]', inputArray[0].value);
+        quizzUser.levels[cont].title = inputArray[0].value;
+        quizzUser.levels[cont].minValue = Number(inputArray[1].value);
+        quizzUser.levels[cont].image = inputArray[2].value;
+        quizzUser.levels[cont].text = inputArray[3].value;
+        
+
+        if (cont < levelsQuizz - 1) {
+            quizzUser.levels[cont+1]=
+                {
+                    title: "Título do nível 1",
+                    image: "https://http.cat/411.jpg",
+                    text: "Descrição do nível 1",
+                    minValue: 0
+                }
+            ;
+        }
+    }
 }
 
 
+function addHTMLlevel(param) {
+    const h3 = param.querySelector('h3').innerText;
+    const infoHidden = document.createElement('div');
+    infoHidden.classList.add('info', 'hidden');
+    infoHidden.innerHTML += `
+        <h3>${h3}</h3>
+        <input type="text" placeholder="Título do nível" oninput="setCustomValidity('');"
+            pattern=".{10,}" required
+            oninvalid="this.setCustomValidity('Insira no mínimo 10 caracteres!')">
+        <input type="number" placeholder="% de acerto mínima" oninput="setCustomValidity('');" max="100"
+            min="0" required oninvalid="this.setCustomValidity('Formato inválido')">
+        <input type="url" placeholder="URL da imagem do nível" oninput="setCustomValidity('');" required
+            oninvalid="this.setCustomValidity('Formato inválido')">
+        <input type="text" placeholder="Descrição do nível" oninput="setCustomValidity('');" 
+        pattern=".{30,}" required
+            oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
+        </div>`
+    param.appendChild(infoHidden);
+}
+
+function quizzUserPost(){
+    const promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizzUser);
+    promise.then(tudobom());}
 
 
-
+function tudobom(){
+    console.log('Deu tudo certo');
+}
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
 
@@ -424,39 +526,40 @@ function playQuizz() {
     //verificar se a pergunta já foi respondida 
     const quest = this.parentNode; // questão que o usuário clicou
 
-    if ( quest.classList.contains("answered-question") === false){
-    quest.classList.add("answered-question")
-    //ao clicar na resposta será referente a pergunta 
-    console.log(this)
-    this.classList.remove("matte")
-    this.classList.add("clicked")
+    if (quest.classList.contains("answered-question") === false) {
+        quest.classList.add("answered-question")
+        //ao clicar na resposta será referente a pergunta 
+        console.log(this)
+        this.classList.remove("matte")
+        this.classList.add("clicked")
 
-    // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
-    
-    console.log("questão", quest)
+        // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
 
-    const matte = quest.querySelectorAll(` .matte`);
-    console.log("elementos matte", matte)
-    console.log("child", child)
+        console.log("questão", quest)
 
-    matte.forEach((matte) => matte.style.opacity = "0.3");
+        const matte = quest.querySelectorAll(` .matte`);
+        console.log("elementos matte", matte)
+        console.log("child", child)
 
-    const correct = quest.querySelectorAll(`.true p`);
-    correct.forEach((correct) => correct.style.color = "#009C22")
+        matte.forEach((matte) => matte.style.opacity = "0.3");
 
-    const incorrect = quest.querySelectorAll(`.false p`);
-    incorrect.forEach((incorrect) => incorrect.style.color = "#FF4B4B")
+        const correct = quest.querySelectorAll(`.true p`);
+        correct.forEach((correct) => correct.style.color = "#009C22")
 
-    if (this.classList.contains("true")) {
-        correctAnswer++;
+        const incorrect = quest.querySelectorAll(`.false p`);
+        incorrect.forEach((incorrect) => incorrect.style.color = "#FF4B4B")
+
+        if (this.classList.contains("true")) {
+            correctAnswer++;
+        }
+
+
+        console.log("corretas", correctAnswer)
+        if (this.classList.contains("clicked") == true) {
+            contScroll++;
+        }
+        setTimeout(scrollNextQuestion, 2000);
     }
-    console.log("corretas", correctAnswer)
-    if (this.classList.contains("clicked") == true) {
-        contScroll++;
-    }
-    setTimeout(scrollNextQuestion, 2000);
-}
-setTimeout(finishedQuizz, 2000);
 }
 
 function scrollNextQuestion() {
