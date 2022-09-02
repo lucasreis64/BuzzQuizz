@@ -17,6 +17,7 @@ function quizzGet() {
 
     containerQuizzes = document.querySelector('.container-quizzes')
 
+
     containerQuizzes = document.querySelector('.container-quizzes');
     addButtom = document.querySelector('.quizzes-user button');
 
@@ -114,7 +115,7 @@ function quizzMakerOne() {
                 </div>
                 <input type="submit" value="Prosseguir para criar perguntas">
             </form>
-            `
+    </div>`   
 }
 
 //renderiza página 2
