@@ -307,7 +307,6 @@ function getValues() {
             };
         }
     }
-
 }
 
 //renderiza página 3 do quizz
