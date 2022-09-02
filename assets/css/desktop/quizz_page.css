@@ -95,7 +95,8 @@
 /*-------------- LEVEL------------*/
 .level-container{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 .quizz-level{
     margin-top: 42px;
@@ -145,4 +146,41 @@
     color: #484848;
     width: 328px;
 
+}
+
+.quizz-buttons{
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.restart{
+    width: 260.38px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EC362D;
+    border-radius: 15px;
+
+    /* font */
+    font-family: 'Roboto',sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    color: #FFF5F4;
+}
+
+.home{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    color: #818181;
+    margin-top: 16px;
 }

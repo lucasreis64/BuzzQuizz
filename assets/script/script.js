@@ -307,15 +307,16 @@ function quizzMakerThree() {
 
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
-
+let quizzId;
 //pega as informações do quizz especifico pelo ID;
 function quizzDataGet() {
-    const quizzId = this.id;
+    quizzId = this.id;
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening); //se for sucesso abre o quizz
 }
 
-let cover, // variavel para a capa do quizz
+let  
+    cover, // variavel para a capa do quizz
     title, // variavel para otitulo do quizz
     questions, //variavel para todas questões do quizz
     question, // variavel para uma questão do quizz
@@ -327,7 +328,7 @@ let cover, // variavel para a capa do quizz
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
-    message = message.data;
+    message= message.data;
     cover = message.image;
     title = message.title;
     questions = message.questions;
@@ -347,6 +348,7 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
         openedQuizzShowAnswers(answers, child);
 
     }
+    
     contScroll = 1
 }
 
@@ -394,6 +396,7 @@ function openedQuizzShowQuestions(question, backgroundQuestion, child) {
 //criação das respostas do quizz
 function openedQuizzShowAnswers(answers, child) {
     let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    console.log("answersDiv", answersDiv)
     answers.sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < answers.length; i++) {
@@ -522,7 +525,8 @@ function renderLevel (){
 
 // função para exibir a porcentagem e acertos
 function showLevel(levelTitle,levelImage,levelText){
-   
+   const buttons = document.querySelector (".quizz-buttons")
+    buttons.style.display = "flex";
     levelContainer.style.display = "flex";
 
     levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
@@ -531,4 +535,33 @@ function showLevel(levelTitle,levelImage,levelText){
         <p class="level-text">  ${levelText} </p>
     </div>`
 
+}
+
+function restartQuizz(){
+    const main = document.querySelector(".quizz-page")
+    main.innerHTML = `<div class='quizz-cover'>
+
+    </div>
+
+
+    <div class='quizz-questions'>
+
+    </div>
+
+    <div class='level-container'>
+        <div class = 'quizz-level'> 
+
+        </div>`;
+    child = 0;
+    correctAnswer = 0;
+    percentage = 0;
+    i=0;
+    contScroll=0;
+
+    const promise = axios.get(`${quizzesurl}/${quizzId}`);
+    promise.then(quizzOpening);
+}
+
+function backHomePage(){
+    location.reload()
 }
