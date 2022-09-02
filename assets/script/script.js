@@ -191,15 +191,18 @@ let correctAnswer = 0;
 let contScroll=2;
 
 function playQuizz (){
-   //ao clicar na resposta será referente a pergunta 
-    console.log(this)
-    this.classList.remove("matte")
-    this.classList.add("clicked")
-
+  
     // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
         const quest = this.parentNode; // questão que o usuário clicou
-        console.log ("quetão", quest)
-    
+        console.log ("questão", quest)
+        //ao clicar na resposta será referente a pergunta 
+        
+
+        
+        console.log(this)
+        this.classList.remove("matte")
+        this.classList.add("clicked")
+
         const matte = quest.querySelectorAll(` .matte`);
         console.log("elementos matte",matte)
         console.log("child",child)
@@ -210,23 +213,18 @@ function playQuizz (){
         correct.forEach((correct) => correct.style.color = "#009C22")
 
         const incorrect = quest.querySelectorAll(`.false p`);
-        incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
+        incorrect.forEach((incorrect) => incorrect.style.color = "#FF4B4B")
     
         if (this.classList.contains("true")){
             correctAnswer++;
         }
 
-setTimeout(scrollNextQuestion,2000);
+
     console.log("corretas",correctAnswer)
-    if (this.classList.contains("clicked"==false)){
-        contScroll++;
-    
-    }
-    
+    setTimeout(scrollNextQuestion,2000);
+  
 }
 
-
- 
 
 
 function scrollNextQuestion(){
