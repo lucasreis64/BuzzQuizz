@@ -3,7 +3,6 @@ let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
 const main = document.querySelector('.main');
 let perguntasQuizz, niveisQuizz, quizzUser = [];
-let quizzMakerBody;
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message;
@@ -16,7 +15,6 @@ quizzGet();
 function quizzGet() {
 
     containerQuizzes = document.querySelector('.container-quizzes')
-
 
     containerQuizzes = document.querySelector('.container-quizzes');
     addButtom = document.querySelector('.quizzes-user button');
@@ -39,7 +37,6 @@ function renderQuizzInfo(message) {
         id = msg[cont].id;
         quizzShow(image, text, id);
     }
-    
 }
 
 //cria a div que mostra o quiz na tela principal;
@@ -79,25 +76,15 @@ function renderMainContent() {
 
 //inicia a criação do quizz;
 function quizzMaker() {
-    // eraseContent(main);
-    const shadowShow = document.createElement("div")
-    shadowShow.classList.add("shadow-show")
-    quizzMakerBody = document.createElement("div")
-    quizzMakerBody.classList.add("quizz-maker-container")
+    eraseContent(main);
+    content = document.querySelector('.content');
     quizzMakerOne();
-    document.body.appendChild(quizzMakerBody)
-    document.body.appendChild(shadowShow)
-    document.body.style.overflowY="hidden"
-    setTimeout(animateContainer, 50) 
-    function animateContainer(){
-        quizzMakerBody.style.top = "50%"
-        shadowShow.style.opacity = "1"
-    }
 }
 
 //renderiza página 1
 function quizzMakerOne() {
-    quizzMakerBody.innerHTML = `
+    content.innerHTML = `
+    <div class="quizz-maker-container">
         <div class="quizz-maker1">
             <h2>Comece pelo começo</h2>
             <form action="#" onsubmit="setTimeout(quizzMakerTwo,100)">
@@ -116,7 +103,7 @@ function quizzMakerOne() {
                 </div>
                 <input type="submit" value="Prosseguir para criar perguntas">
             </form>
-    </div>`   
+    </div>`
 }
 
 //renderiza página 2
@@ -216,14 +203,11 @@ function addHTML(param) {
             oninvalid="this.setCustomValidity('Insira no mínimo 20 caracteres!')">
         <input type="text" placeholder="Cor de fundo da pergunta" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="setCustomValidity('');"
             required oninvalid="this.setCustomValidity('Formato inválido')">
-
         <h3>Resposta correta</h3>
         <input type="text" class="answer" placeholder="Resposta correta" oninput="setCustomValidity('');" required
             oninvalid="this.setCustomValidity('Texto não pode estar vazio')">
-
         <input type="url" class="image" placeholder="URL da imagem" oninput="setCustomValidity('');" required
             oninvalid="this.setCustomValidity('Formato inválido')">
-
         <h3>Respostas incorretas</h3>
         <input type="text" class="answer" placeholder="Resposta incorreta 1" oninput="setCustomValidity('');" required
             oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
@@ -308,6 +292,7 @@ function getValues() {
             };
         }
     }
+
 }
 
 //renderiza página 3 do quizz
@@ -315,12 +300,6 @@ function quizzMakerThree() {
     getValues();
     console.log('Hello, World');
 }
-
-
-
-
-
-
 
 
 
