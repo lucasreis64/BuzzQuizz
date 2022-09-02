@@ -5,8 +5,7 @@ const main = document.querySelector('.main');
 let perguntasQuizz, niveisQuizz, quizzUser = [];
 const mainCopy = main.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text, id, message, valido, falso = 0,
-    contador = 1;
+let image, text, id, message;
 
 
 quizzGet();
@@ -161,27 +160,27 @@ function addAnotherAnswer() {
 
     inputAnswer.classList.add('answer');
     inputAnswer.setAttribute("type", "text");
-    inputAnswer.setAttribute("oninput","setCustomValidity('');");
+    inputAnswer.setAttribute("oninput", "setCustomValidity('');");
     inputAnswer.setAttribute("placeholder", `Resposta incorreta ${answersArray.length}`);
-    inputAnswer.setAttribute("oninvalid","this.setCustomValidity('Formato inválido')");
-    
+    inputAnswer.setAttribute("oninvalid", "this.setCustomValidity('Formato inválido')");
+
     inputImage.classList.add('image');
     inputImage.setAttribute("type", "text");
-    inputImage.setAttribute("oninput","setCustomValidity('');");
+    inputImage.setAttribute("oninput", "setCustomValidity('');");
     inputImage.setAttribute("placeholder", `Resposta incorreta ${answersArray.length}`);
-    inputImage.setAttribute("oninvalid","this.setCustomValidity('Formato inválido')");
+    inputImage.setAttribute("oninvalid", "this.setCustomValidity('Formato inválido')");
 
-/*     const incorrectAnswerElement = `
-    <input class = "answer" type="text" placeholder="Resposta incorreta ${answersArray.length}" oninput="setCustomValidity('');" required
-    oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
-    <input class = "image" type="url" placeholder="URL da imagem ${answersArray.length}" oninput="setCustomValidity('');" required
-    oninvalid="this.setCustomValidity('Formato inválido')">` */
+    /*     const incorrectAnswerElement = `
+        <input class = "answer" type="text" placeholder="Resposta incorreta ${answersArray.length}" oninput="setCustomValidity('');" required
+        oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
+        <input class = "image" type="url" placeholder="URL da imagem ${answersArray.length}" oninput="setCustomValidity('');" required
+        oninvalid="this.setCustomValidity('Formato inválido')">` */
 
     parent.appendChild(inputAnswer);
     parent.appendChild(inputImage);
     parent.appendChild(buttonCopy);
-    
-    if (answersArray.length===4) {
+
+    if (answersArray.length === 4) {
         this.remove();
     }
 }
@@ -268,7 +267,7 @@ function getValues() {
         console.log('okok2');
         inputArray = disgusting.querySelectorAll('input');
 
-        console.log('inputArray[0]',inputArray[0].value);
+        console.log('inputArray[0]', inputArray[0].value);
         quizzUser.questions[cont].title = inputArray[0].value;
         quizzUser.questions[cont].color = inputArray[1].value;
 
@@ -287,12 +286,13 @@ function getValues() {
             }
         }
         if (cont < questionsQuizz - 1) {
-            quizzUser.questions[cont+1]={
+            quizzUser.questions[cont + 1] = {
                 answers: [{
                     text: '',
                     image: '',
                     isCorrectAnswer: true
-                }]};
+                }]
+            };
         }
     }
 
@@ -329,28 +329,28 @@ let cover, // variavel para a capa do quizz
     questions, //variavel para todas questões do quizz
     question, // variavel para uma questão do quizz
     backgroundQuestion, // variavel para a cor da pergunta do quizz
-    answers,  //variavel para todas perguntas 
+    answers, //variavel para todas perguntas 
     child = 0;
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
-    message = message.data; 
+    message = message.data;
     cover = message.image;
     title = message.title;
     questions = message.questions;
-    
+
     const header = document.querySelector(".header")
-    header.scrollIntoView(); 
+    header.scrollIntoView();
     openedQuizzShowCover(cover, title); // função criar a capa do quizz
 
 
-     for (let i = 0; i < questions.length; i++) {
-        answers = questions[i].answers; 
+    for (let i = 0; i < questions.length; i++) {
+        answers = questions[i].answers;
         question = questions[i].title;
         backgroundQuestion = questions[i].color;
         child++;
-        openedQuizzShowQuestions(question, backgroundQuestion,child) //função criar perguntas quizz
-        openedQuizzShowAnswers(answers,child);
+        openedQuizzShowQuestions(question, backgroundQuestion, child) //função criar perguntas quizz
+        openedQuizzShowAnswers(answers, child);
     }
 }
 
@@ -375,7 +375,7 @@ const quizzQuestions = document.querySelector('.quizz-questions');
 
 
 //criação das perguntas do quizz
-function openedQuizzShowQuestions(question, backgroundQuestion,child) {
+function openedQuizzShowQuestions(question, backgroundQuestion, child) {
     const questionContainer = document.createElement('div');
     questionContainer.classList.add('question-container');
     questionContainer.classList.add(`number${child}`)
@@ -396,79 +396,78 @@ function openedQuizzShowQuestions(question, backgroundQuestion,child) {
 
 
 //criação das respostas do quizz
-function openedQuizzShowAnswers(answers,child) {
-    let answersDiv= document.querySelector(`.question-container:nth-child(${child}) .answers`);
-    answers.sort(()=> Math.random() - 0.5);
+function openedQuizzShowAnswers(answers, child) {
+    let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    answers.sort(() => Math.random() - 0.5);
 
-    for(let i=0; i<answers.length;i++){
-    const answerDiv = document.createElement('div');
-    answerDiv.classList.add('answer');
-    answerDiv.classList.add('matte');
-    answerDiv.classList.add (`${answers[i].isCorrectAnswer}`)
-    
-    const answerImage = document.createElement('img');
-    answerImage.src = answers[i].image;
+    for (let i = 0; i < answers.length; i++) {
+        const answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+        answerDiv.classList.add('matte');
+        answerDiv.classList.add(`${answers[i].isCorrectAnswer}`)
 
-    const answerP = document.createElement('p');
-    answerP.innerText = answers[i].text;
+        const answerImage = document.createElement('img');
+        answerImage.src = answers[i].image;
 
-    answersDiv.appendChild(answerDiv);
-    answerDiv.appendChild(answerImage);
-    answerDiv.appendChild(answerP);
-    answerDiv.addEventListener('click', playQuizz);
- }
-    
+        const answerP = document.createElement('p');
+        answerP.innerText = answers[i].text;
+
+        answersDiv.appendChild(answerDiv);
+        answerDiv.appendChild(answerImage);
+        answerDiv.appendChild(answerP);
+        answerDiv.addEventListener('click', playQuizz);
+    }
+
 }
 //------------ JOGAR O QUIZZ---------------------//
 let correctAnswer = 0;
-let contScroll=1;
+let contScroll = 1;
 
-function playQuizz (){
-   //ao clicar na resposta será referente a pergunta 
+function playQuizz() {
+    //ao clicar na resposta será referente a pergunta 
     console.log(this)
     this.classList.remove("matte")
     this.classList.add("clicked")
 
     // ao clicar em um elemento answer todos ficar foscos menos o elemento clicado
-        const quest = this.parentNode; // questão que o usuário clicou
-        console.log ("questão", quest)
-    
-        const matte = quest.querySelectorAll(` .matte`);
-        console.log("elementos matte",matte)
-        console.log("child",child)
-        
-        matte.forEach((matte) => matte.style.opacity = "0.3");
-  
-        const correct = quest.querySelectorAll(`.true p`);
-        correct.forEach((correct) => correct.style.color = "#009C22")
+    const quest = this.parentNode; // questão que o usuário clicou
+    console.log("questão", quest)
 
-        const incorrect = quest.querySelectorAll(`.false p`);
-        incorrect .forEach((incorrect) => incorrect.style.color = "#FF4B4B")
-    
-        if (this.classList.contains("true")){
-            correctAnswer++;
-        }
+    const matte = quest.querySelectorAll(` .matte`);
+    console.log("elementos matte", matte)
+    console.log("child", child)
 
+    matte.forEach((matte) => matte.style.opacity = "0.3");
 
-console.log("corretas",correctAnswer)
-if (this.classList.contains("clicked")==true){
-    contScroll++;
-}
-setTimeout(scrollNextQuestion,2000);
+    const correct = quest.querySelectorAll(`.true p`);
+    correct.forEach((correct) => correct.style.color = "#009C22")
 
-}
+    const incorrect = quest.querySelectorAll(`.false p`);
+    incorrect.forEach((incorrect) => incorrect.style.color = "#FF4B4B")
 
-
- 
-
-
-function scrollNextQuestion(){
-    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
-    console.log("scrolllll",scrollToQuestion)
-    if(contScroll > 1 && contScroll <= 3){
-        scrollToQuestion.scrollIntoView({behavior: "smooth", block: "center"})
+    if (this.classList.contains("true")) {
+        correctAnswer++;
     }
-    if(contScroll ==3){
+
+
+    console.log("corretas", correctAnswer)
+    if (this.classList.contains("clicked") == true) {
+        contScroll++;
+    }
+    setTimeout(scrollNextQuestion, 2000);
+
+}
+
+function scrollNextQuestion() {
+    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
+    console.log("scrolllll", scrollToQuestion)
+    if (contScroll > 1 && contScroll <= 3) {
+        scrollToQuestion.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        })
+    }
+    if (contScroll == 3) {
         contScroll = 1
     }
     // console.log(contScroll)
