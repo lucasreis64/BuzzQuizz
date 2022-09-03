@@ -474,6 +474,8 @@ let quizzId;
 //pega as informações do quizz especifico pelo ID;
 function quizzDataGet() {
     quizzId = this.id;
+    main = document.querySelector('.main');
+    eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening); //se for sucesso abre o quizz
 }
@@ -487,7 +489,29 @@ let
     answers, //variavel para todas perguntas 
     levels,
     contScroll,
-    child = 0;
+    child = 0,
+    header,
+    quizzCover,
+    quizzCoverImg,
+    quizzQuestions,
+    questionContainer,
+    questionTitle,
+    answersDiv,
+    answersChildDiv,
+    answerDiv,
+    answerImage,
+    answerP,
+    quest,
+    matte,
+    correct,
+    incorrect,
+    scrollToQuestion,
+    allFinishedQuestions,
+    buttons,
+    quizzPage;
+
+
+
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     console.log("sucesso");
@@ -513,15 +537,14 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
             </div>
         </div>
     `
-    main = document.querySelector('.main');
-    eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
+    
     message = message.data;
     cover = message.image;
     title = message.title;
     questions = message.questions;
     levels = message.levels;
 
-    const header = document.querySelector(".header")
+    header = document.querySelector(".header")
     header.scrollIntoView();
     openedQuizzShowCover(cover, title); // função criar a capa do quizz
 
@@ -543,10 +566,10 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
 
 //criação da capa do quizz
 function openedQuizzShowCover(cover, title) {
-    const quizzCover = document.querySelector('.quizz-cover');
-    const quizzCoverImg = document.createElement('img');
+    quizzCover = document.querySelector('.quizz-cover');
+    quizzCoverImg = document.createElement('img');
     quizzCoverImg.src = cover;
-    const quizzTitle = document.createElement('p');
+    quizzTitle = document.createElement('p');
     quizzTitle.innerText = title;
 
     quizzCover.appendChild(quizzCoverImg);
@@ -559,17 +582,17 @@ function openedQuizzShowCover(cover, title) {
 
 //criação das perguntas do quizz
 function openedQuizzShowQuestions(question, backgroundQuestion, child) {
-    const quizzQuestions = document.querySelector('.quizz-questions');
-    const questionContainer = document.createElement('div');
+    quizzQuestions = document.querySelector('.quizz-questions');
+    questionContainer = document.createElement('div');
     questionContainer.classList.add('question-container');
     questionContainer.classList.add(`number${child}`)
 
-    const questionTitle = document.createElement('p');
+    questionTitle = document.createElement('p');
     questionTitle.classList.add('question')
     questionTitle.innerText = question;
     questionTitle.style.backgroundColor = backgroundQuestion;
 
-    const answersDiv = document.createElement('div');
+    answersDiv = document.createElement('div');
     answersDiv.classList.add('answers');
 
     questionContainer.appendChild(questionTitle);
@@ -581,23 +604,23 @@ function openedQuizzShowQuestions(question, backgroundQuestion, child) {
 
 //criação das respostas do quizz
 function openedQuizzShowAnswers(answers, child) {
-    let answersDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
+    answersChildDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
     console.log("answersDiv", answersDiv)
     answers.sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < answers.length; i++) {
-        const answerDiv = document.createElement('div');
+       answerDiv = document.createElement('div');
         answerDiv.classList.add('answer');
         answerDiv.classList.add('matte');
         answerDiv.classList.add(`${answers[i].isCorrectAnswer}`)
 
-        const answerImage = document.createElement('img');
+        answerImage = document.createElement('img');
         answerImage.src = answers[i].image;
 
-        const answerP = document.createElement('p');
+        answerP = document.createElement('p');
         answerP.innerText = answers[i].text;
 
-        answersDiv.appendChild(answerDiv);
+        answersChildDiv.appendChild(answerDiv);
         answerDiv.appendChild(answerImage);
         answerDiv.appendChild(answerP);
         answerDiv.addEventListener('click', playQuizz);
@@ -610,7 +633,7 @@ let correctAnswer = 0;
 function playQuizz() {
 
     //verificar se a pergunta já foi respondida 
-    const quest = this.parentNode; // questão que o usuário clicou
+    quest = this.parentNode; // questão que o usuário clicou
 
     if (quest.classList.contains("answered-question") === false) {
         quest.classList.add("answered-question")
@@ -623,16 +646,16 @@ function playQuizz() {
 
         console.log("questão", quest)
 
-        const matte = quest.querySelectorAll(` .matte`);
+       matte = quest.querySelectorAll(` .matte`);
         console.log("elementos matte", matte)
         console.log("child", child)
 
         matte.forEach((matte) => matte.style.opacity = "0.3");
 
-        const correct = quest.querySelectorAll(`.true p`);
+        correct = quest.querySelectorAll(`.true p`);
         correct.forEach((correct) => correct.style.color = "#009C22")
 
-        const incorrect = quest.querySelectorAll(`.false p`);
+        incorrect = quest.querySelectorAll(`.false p`);
         incorrect.forEach((incorrect) => incorrect.style.color = "#FF4B4B")
 
         if (this.classList.contains("true")) {
@@ -650,7 +673,7 @@ function playQuizz() {
 }
 
 function scrollNextQuestion() {
-    let scrollToQuestion = document.querySelector(`.number${contScroll}`)
+    scrollToQuestion = document.querySelector(`.number${contScroll}`)
     console.log("scrolllll", scrollToQuestion)
     if (contScroll > 1 && contScroll <= questions.length) {
         scrollToQuestion.scrollIntoView({
@@ -667,10 +690,11 @@ function correctPercentage() {
     percentage = Math.round(percentage);
 }
 
-const levelContainer = document.querySelector(".quizz-level");
+let levelContainer;
 
 function finishedQuizz() {
-    const allFinishedQuestions = document.querySelectorAll(".answered-question")
+    allFinishedQuestions = document.querySelectorAll(".answered-question")
+    levelContainer = document.querySelector(".quizz-level");
     if (allFinishedQuestions.length === child) {
         //calcular a porcentagem
         correctPercentage()
@@ -716,7 +740,7 @@ function renderLevel() {
 
 function showLevel(levelTitle, levelImage, levelText) {
     levelContainer.style.display = "flex";
-    const buttons = document.querySelector(".quizz-buttons")
+    buttons = document.querySelector(".quizz-buttons")
     buttons.style.display = "flex";
 
     levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
@@ -727,32 +751,30 @@ function showLevel(levelTitle, levelImage, levelText) {
 
 
 }
-
-function restartQuizz() {
-    const main = document.querySelector(".quizz-page")
-    main.innerHTML = `<div class='quizz-cover'>
-
-    </div>
-
-
-    <div class='quizz-questions'>
-
-    </div>
-
-    <div class='level-container'>
-        <div class = 'quizz-level'> 
-
-        </div>`;
-    child = 0;
+function reset(){
+     child = 0;
     correctAnswer = 0;
     percentage = 0;
     i = 0;
     contScroll = 0;
+    /* let matte = document.querySelectorAll (".matte");
+    matte.forEach((matte) => matteclassList.remove ("matte-on"))
+    let clicked = document.querySelectorAll (".clicked");
+    clicked.forEach((clicked) => clicked.classList.add ("matte"))
+    clicked.forEach((clicked) => clicked.classList.remove ("clicked")) */
+    
+
+}
+function restartQuizz() {
+    quizzPage= document.querySelector(".content")
+    quizzPage.innerHTML = ``;
+        reset()
 
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening);
-}
+} 
 
 function backHomePage() {
     location.reload()
 }
+
