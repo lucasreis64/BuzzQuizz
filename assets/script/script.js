@@ -1,11 +1,12 @@
 let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
-const main = document.querySelector('.main');
-let questionsQuizz, levelsQuizz, quizzUser = {};
-const mainCopy = main.innerHTML;
+let main = document.querySelector('.main');
+let questionsQuizz, levelsQuizz, quizzUser = {},
+    personalQuizzId = [];
+const contentCopy = content.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
-let image, text, id, message;
+let image, text, id, message, returned;
 
 
 quizzGet();
@@ -60,17 +61,17 @@ function quizzShow(image, text, id) {
 
     containerQuizzes.appendChild(quizz);
     quizz.addEventListener('click', quizzDataGet);
-
 }
 
 //apaga o html do elemento escolhido pelo parametro passado;
-function eraseContent(main) {
-    main.innerHTML = '';
+function eraseContent(mainn) {
+        mainn.remove();
 }
 
 //renderiza a página principal novamente (reiniciando);
 function renderMainContent() {
-    main.innerHTML = mainCopy;
+    eraseContent(main);
+    content.innerHTML = contentCopy;
     quizzGet();
 }
 
@@ -84,10 +85,11 @@ function quizzMaker() {
 //renderiza página 1
 function quizzMakerOne() {
     content.innerHTML = `
+    <div class=".main">
     <div class="quizz-maker-container">
         <div class="quizz-maker1">
             <h2>Comece pelo começo</h2>
-            <form action="#" onsubmit="setTimeout(quizzMakerTwo,100)">
+            <form action="#" onsubmit="quizzMakerTwo()">
                 <div class="info">
                     <input type="text" placeholder="Título do seu quizz" oninput="setCustomValidity('');"
                         maxlength="65" pattern=".{20,}" required
@@ -103,6 +105,7 @@ function quizzMakerOne() {
                 </div>
                 <input type="submit" value="Prosseguir para criar perguntas">
             </form>
+    </div>
     </div>`
 }
 
@@ -112,15 +115,17 @@ function quizzMakerTwo() {
     quizzUser.image = document.querySelector('.info input:nth-child(2)').value;
     questionsQuizz = document.querySelector('.info input:nth-child(3)').value;
     levelsQuizz = document.querySelector('.info input:nth-child(4)').value;
-    eraseContent(content);
+    eraseContent(main);
 
     const questionStructure = `
+    <div class="main">
     <div class="quizz-maker-container">
             <div class="quizz-maker2">
                 <h2>Crie suas perguntas</h2>
-                <form action="#" onsubmit="setTimeout(quizzMakerThree,100)">
+                <form action="#" onsubmit="quizzMakerThree()">
                 </form>
             </div>
+    </div>
     </div>
     `
 
@@ -180,7 +185,7 @@ function addAnotherAnswer() {
     parent.appendChild(inputImage);
     parent.appendChild(buttonCopy);
 
-    if (answersArray.length === 4) {
+    if (answersArray.length === 3) {
         this.remove();
     }
 }
@@ -299,14 +304,16 @@ function getValues() {
 function quizzMakerThree() {
     getValues();
     console.log('Hello, World');
-    eraseContent(content);
+    eraseContent(main);
     const questionStructure = `
+    <div class="main">
     <div class="quizz-maker-container">
             <div class="quizz-maker3">
                 <h2>Agora, decida os níveis</h2>
                 <form action="#" onsubmit="getLevelValue(); setTimeout(quizzUserPost, 1000);">
                 </form>
             </div>
+    </div>
     </div>
     `
 
@@ -390,19 +397,76 @@ function addHTMLlevel(param) {
             oninvalid="this.setCustomValidity('Formato inválido')">
         <input type="text" placeholder="Descrição do nível" oninput="setCustomValidity('');" 
         pattern=".{30,}" required
-            oninvalid="this.setCustomValidity('Texto não pode estar vazio!')">
+            oninvalid="this.setCustomValidity('Insira pelo menos caracteres!')">
         </div>`
     param.appendChild(infoHidden);
 }
 
 function quizzUserPost() {
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes", quizzUser);
-    promise.then(tudobom());
+    promise.then(quizzMakerEnd);
 }
 
+let contador = 0;
 
-function tudobom() {
-    console.log('Deu tudo certo');
+function quizzMakerEnd(response) {
+    contador++;
+    console.log("Resposta: ", response);
+    personalQuizzId[contador] = response.data.id;
+    const promise = axios.get(`${quizzesurl}/${personalQuizzId[contador]}`);
+    main = document.querySelector('.main');
+    eraseContent(main);
+    const endStructure = `
+    <div class="main"
+    <div class="quizz-maker-container">
+            <div class="quizz-end">
+                <h2>Seu quizz está pronto</h2>
+            </div>
+    </div>
+    `
+    content.innerHTML += endStructure;
+    promise.then(quizzGetbyId);
+
+}
+
+function quizzGetbyId(response) {
+    response = response.data;
+    image = response.image;
+    text = response.title;
+    id = response.id;
+    quizzShowUser(image, text, id);
+}
+
+function quizzShowUser(image, text, id) {
+    const end = document.querySelector(".quizz-end");
+    const quizz = document.createElement('div');
+    quizz.classList.add('quizz-show');
+    quizz.id = id;
+
+    const img = document.createElement('img');
+    img.src = image;
+
+    const gradient = document.createElement('div');
+    gradient.classList.add('gradient','tam');
+
+    const p = document.createElement('p');
+    p.innerText = text;
+
+    quizz.appendChild(img);
+    quizz.appendChild(gradient);
+    quizz.appendChild(p);
+
+    end.appendChild(quizz);
+    const button = document.createElement('button');
+    button.innerHTML = 'Acessar Quizz'
+    button.id = id;
+    console.log(button.id)
+    end.appendChild(button);
+    button.addEventListener('click', quizzDataGet);
+    const h4 = document.createElement('h4');
+    h4.innerText = 'Voltar para home'
+    end.appendChild(h4);
+    h4.addEventListener('click', renderMainContent);
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
@@ -414,7 +478,7 @@ function quizzDataGet() {
     promise.then(quizzOpening); //se for sucesso abre o quizz
 }
 
-let  
+let
     cover, // variavel para a capa do quizz
     title, // variavel para otitulo do quizz
     questions, //variavel para todas questões do quizz
@@ -426,8 +490,32 @@ let
     child = 0;
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
+    console.log("sucesso");
+    content.innerHTML+=`
+    <div class="quizz-page">
+            <div class="quizz-cover">
+            </div>
+            <div class="quizz-questions">
+            </div>
+            <div class="level-container">
+                <div class="quizz-level">
+                    <!--   <p class = "level-title "> </p>
+                    <div class = "level-content"> 
+                        <img class="level-img">
+                        <p class="level-text"></p>
+                    </div> -->
+                </div>
+
+                <div class="quizz-buttons">
+                    <p class="restart" onclick="restartQuizz()">Reiniciar Quizz</p>
+                    <p class="home" onclick="backHomePage()">Voltar pra home</p>
+                </div>
+            </div>
+        </div>
+    `
+    main = document.querySelector('.main');
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
-    message= message.data;
+    message = message.data;
     cover = message.image;
     title = message.title;
     questions = message.questions;
@@ -445,19 +533,17 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
         child++;
         openedQuizzShowQuestions(question, backgroundQuestion, child) //função criar perguntas quizz
         openedQuizzShowAnswers(answers, child);
-
     }
-    
+
     contScroll = 1
 }
 
 
-const quizzCover = document.querySelector('.quizz-cover');
 
 
 //criação da capa do quizz
 function openedQuizzShowCover(cover, title) {
-
+    const quizzCover = document.querySelector('.quizz-cover');
     const quizzCoverImg = document.createElement('img');
     quizzCoverImg.src = cover;
     const quizzTitle = document.createElement('p');
@@ -465,14 +551,15 @@ function openedQuizzShowCover(cover, title) {
 
     quizzCover.appendChild(quizzCoverImg);
     quizzCover.appendChild(quizzTitle);
-
+    console.log('capa')
 }
 
-const quizzQuestions = document.querySelector('.quizz-questions');
+
 
 
 //criação das perguntas do quizz
 function openedQuizzShowQuestions(question, backgroundQuestion, child) {
+    const quizzQuestions = document.querySelector('.quizz-questions');
     const questionContainer = document.createElement('div');
     questionContainer.classList.add('question-container');
     questionContainer.classList.add(`number${child}`)
@@ -515,7 +602,6 @@ function openedQuizzShowAnswers(answers, child) {
         answerDiv.appendChild(answerP);
         answerDiv.addEventListener('click', playQuizz);
     }
-
 }
 //------------ JOGAR O QUIZZ---------------------//
 let correctAnswer = 0;
@@ -560,7 +646,7 @@ function playQuizz() {
         }
         setTimeout(scrollNextQuestion, 2000);
     }
-   setTimeout(finishedQuizz,2000);
+    setTimeout(finishedQuizz, 2000);
 }
 
 function scrollNextQuestion() {
@@ -628,11 +714,11 @@ function renderLevel() {
 
 // função para exibir a porcentagem e acertos
 
-function showLevel(levelTitle,levelImage,levelText){
+function showLevel(levelTitle, levelImage, levelText) {
     levelContainer.style.display = "flex";
-   const buttons = document.querySelector (".quizz-buttons")
+    const buttons = document.querySelector(".quizz-buttons")
     buttons.style.display = "flex";
-    
+
     levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
     <div class = "level-content"> 
         <img class="level-img"  src="${levelImage}">
@@ -642,7 +728,7 @@ function showLevel(levelTitle,levelImage,levelText){
 
 }
 
-function restartQuizz(){
+function restartQuizz() {
     const main = document.querySelector(".quizz-page")
     main.innerHTML = `<div class='quizz-cover'>
 
@@ -660,13 +746,13 @@ function restartQuizz(){
     child = 0;
     correctAnswer = 0;
     percentage = 0;
-    i=0;
-    contScroll=0;
+    i = 0;
+    contScroll = 0;
 
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening);
 }
 
-function backHomePage(){
+function backHomePage() {
     location.reload()
 }
