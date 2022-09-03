@@ -65,8 +65,7 @@ function quizzShow(image, text, id) {
 
 //apaga o html do elemento escolhido pelo parametro passado;
 function eraseContent(mainn) {
-    main = document.querySelector('.main');
-    mainn.remove()
+        mainn.remove();
 }
 
 //renderiza a página principal novamente (reiniciando);
@@ -123,7 +122,7 @@ function quizzMakerTwo() {
     <div class="quizz-maker-container">
             <div class="quizz-maker2">
                 <h2>Crie suas perguntas</h2>
-                <form action="#" onsubmit="setTimeout(quizzMakerThree,100)">
+                <form action="#" onsubmit="quizzMakerThree()">
                 </form>
             </div>
     </div>
@@ -514,6 +513,7 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
             </div>
         </div>
     `
+    main = document.querySelector('.main');
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
     message = message.data;
     cover = message.image;
