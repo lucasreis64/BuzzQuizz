@@ -143,7 +143,7 @@
     color: #FFFFFF;
     background-color: #EC362D;
     margin-bottom: 18px;
-
+    word-break: break-all;
 }
 
 .level-content {
@@ -166,6 +166,7 @@
     line-height: 25px;
     color: #484848;
     width: 328px;
+    word-break: break-all;
 
 
 }
