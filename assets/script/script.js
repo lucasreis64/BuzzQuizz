@@ -469,8 +469,8 @@ function quizzShowUser(image, text, id) {
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
-let quizzId;
 //pega as informações do quizz especifico pelo ID;
+let quizzId;
 function quizzDataGet() {
     quizzId = this.id;
     main = document.querySelector('.main');
@@ -480,38 +480,8 @@ function quizzDataGet() {
     promise.then(quizzOpening); //se for sucesso abre o quizz
 }
 
-let
-    cover, // variavel para a capa do quizz
-    title, // variavel para otitulo do quizz
-    questions, //variavel para todas questões do quizz
-    question, // variavel para uma questão do quizz
-    backgroundQuestion, // variavel para a cor da pergunta do quizz
-    answers, //variavel para todas perguntas 
-    levels,
-    contScroll,
-    child = 0,
-    header,
-    quizzCover,
-    quizzCoverImg,
-    quizzQuestions,
-    questionContainer,
-    questionTitle,
-    answersDiv,
-    answersChildDiv,
-    answerDiv,
-    answerImage,
-    answerP,
-    quest,
-    matte,
-    correct,
-    incorrect,
-    scrollToQuestion,
-    allFinishedQuestions,
-    buttons,
-    quizzPage;
-
-
-    function quizzLoading(){
+//função de loading até o servidor mandar os dados 
+function quizzLoading() {
     content.innerHTML+=`
     <div class="quizz-loading">
            <img src="./assets/images/Spinner.gif">
@@ -519,9 +489,12 @@ let
         </div>
     `
     
-    }
+}
+
 
 //renderiza a página do quizz;
+
+let  cover,title,questions,levels,header,child = 0,question,backgroundQuestion,answers;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     console.log("sucesso");
     content.innerHTML =`
@@ -574,6 +547,7 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
 
 
 //criação da capa do quizz
+let quizzCover,quizzCoverImg, quizzTitle; // ?????
 function openedQuizzShowCover(cover, title) {
     quizzCover = document.querySelector('.quizz-cover');
     quizzCoverImg = document.createElement('img');
@@ -590,6 +564,7 @@ function openedQuizzShowCover(cover, title) {
 
 
 //criação das perguntas do quizz
+let  quizzQuestions, questionContainer, questionTitle, answersDiv;
 function openedQuizzShowQuestions(question, backgroundQuestion, child) {
     quizzQuestions = document.querySelector('.quizz-questions');
     questionContainer = document.createElement('div');
@@ -612,6 +587,7 @@ function openedQuizzShowQuestions(question, backgroundQuestion, child) {
 
 
 //criação das respostas do quizz
+let answersChildDiv, answerDiv,answerImage, answerP;
 function openedQuizzShowAnswers(answers, child) {
     answersChildDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
     console.log("answersDiv", answersDiv)
@@ -639,6 +615,7 @@ function openedQuizzShowAnswers(answers, child) {
 let correctAnswer = 0;
 
 
+let quest,matte,correct,incorrect;
 function playQuizz() {
 
     //verificar se a pergunta já foi respondida 
@@ -681,6 +658,8 @@ function playQuizz() {
     setTimeout(finishedQuizz, 2000);
 }
 
+// Função de scrollar para a próxima questão 
+let scrollToQuestion,contScroll;
 function scrollNextQuestion() {
     scrollToQuestion = document.querySelector(`.number${contScroll}`)
     console.log("scrolllll", scrollToQuestion)
@@ -692,6 +671,9 @@ function scrollNextQuestion() {
     }
 }
 
+
+// ----------------------- FIM DO QUIZZ----------------------------
+//Função para determianr a porcentagem de acertos
 let percentage = 0;
 
 function correctPercentage() {
@@ -699,7 +681,9 @@ function correctPercentage() {
     percentage = Math.round(percentage);
 }
 
-let levelContainer;
+
+//fUNÇÃO PARA FINALIZAR O QUIZZ
+let levelContainer,allFinishedQuestions;
 
 function finishedQuizz() {
     allFinishedQuestions = document.querySelectorAll(".answered-question")
@@ -717,9 +701,8 @@ function finishedQuizz() {
     }
 }
 
-
+// Função para determinar o level  de acordo com os acertos
 let userLevel;
-
 function selectLevel() {
     for (i = 0; i < levels.length; i++) {
         if (percentage >= levels[i].minValue) {
@@ -730,10 +713,8 @@ function selectLevel() {
     renderLevel()
 }
 
-
-let levelTitle,
-    levelImage,
-    levelText;
+//Função para renderizar a mensagem, iamgem e titulo do lvl
+let levelTitle, levelImage, levelText;
 
 function renderLevel() {
 
@@ -745,8 +726,8 @@ function renderLevel() {
     showLevel(levelTitle, levelImage, levelText)
 }
 
-// função para exibir a porcentagem e acertos
-
+// função para exibir a porcentagem e acertos e lvl
+let  buttons;
 function showLevel(levelTitle, levelImage, levelText) {
     levelContainer.style.display = "flex";
     buttons = document.querySelector(".quizz-buttons")
@@ -760,29 +741,27 @@ function showLevel(levelTitle, levelImage, levelText) {
 
 
 }
+
+// resetar todas váriaveis para reeinicar quizz
+let quizzPage;
 function reset(){
+    quizzPage= document.querySelector(".content")
+    quizzPage.innerHTML = ``;
      child = 0;
     correctAnswer = 0;
     percentage = 0;
     i = 0;
     contScroll = 0;
-    /* let matte = document.querySelectorAll (".matte");
-    matte.forEach((matte) => matteclassList.remove ("matte-on"))
-    let clicked = document.querySelectorAll (".clicked");
-    clicked.forEach((clicked) => clicked.classList.add ("matte"))
-    clicked.forEach((clicked) => clicked.classList.remove ("clicked")) */
-    
-
 }
+
+//REEINICIAR QUIZZ
 function restartQuizz() {
-    quizzPage= document.querySelector(".content")
-    quizzPage.innerHTML = ``;
-        reset()
+    reset()
     quizzLoading();
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening);
 } 
-
+// VOLTAR PARA TELA PRINCIPAL
 function backHomePage() {
     location.reload()
 }
