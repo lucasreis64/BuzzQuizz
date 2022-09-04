@@ -432,8 +432,11 @@ function quizzGetbyId(response) {
     response = response.data;
     image = response.image;
     text = response.title;
-    id = response.id;
+    id = response.id
+
+
     quizzShowUser(image, text, id);
+    
 }
 
 function quizzShowUser(image, text, id) {
@@ -466,6 +469,45 @@ function quizzShowUser(image, text, id) {
     h4.innerText = 'Voltar para home'
     end.appendChild(h4);
     h4.addEventListener('click', renderMainContent);
+
+    getUserQuizz (id);
+
+}
+
+
+let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
+storageID = JSON.parse(storageID); 
+let arrayUserQuizzID;
+if (storageID == null){
+    arrayUserQuizzID = [];
+}else{
+    arrayUserQuizzID = storageID;
+}
+
+
+
+
+
+function getUserQuizz (id) {
+
+console.log("idddddd",id)
+
+arrayUserQuizzID.push(id);
+
+
+
+/* localStorage.clear(); */
+
+let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
+localStorage.setItem("id",stringIDs); // atualizar o storage
+console.log ("storage", localStorage) 
+
+
+/* localStorage.setItem("id",""+id);
+console.log("storage",localStorage);
+console.log("getitem",localStorage.getItem("id")); */
+
+    
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
