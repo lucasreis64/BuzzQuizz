@@ -474,7 +474,7 @@ function quizzShowUser(image, text, id) {
 
 }
 
-
+// --- pegando id do local storage--- 
 let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
 storageID = JSON.parse(storageID); 
 let arrayUserQuizzID;
@@ -483,7 +483,6 @@ if (storageID == null){
 }else{
     arrayUserQuizzID = storageID;
 }
-
 
 
 
