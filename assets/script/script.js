@@ -19,7 +19,6 @@ function quizzGet() {
 
     containerQuizzes = document.querySelector('.container-quizzes');
     addButtom = document.querySelector('.quizzes-user button');
-
     const promise = axios.get(quizzesurl);
     promise.then(renderQuizzInfo);
     promise.catch();
@@ -516,9 +515,10 @@ let
     content.innerHTML+=`
     <div class="quizz-loading">
            <img src="./assets/images/Spinner.gif">
-           <p> Carregando Quizz ... </p>
+           <p> Carregando página ... </p>
         </div>
     `
+    
     }
 
 //renderiza a página do quizz;
@@ -778,7 +778,7 @@ function restartQuizz() {
     quizzPage= document.querySelector(".content")
     quizzPage.innerHTML = ``;
         reset()
-
+    quizzLoading();
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening);
 } 
