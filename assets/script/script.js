@@ -476,6 +476,7 @@ function quizzDataGet() {
     quizzId = this.id;
     main = document.querySelector('.main');
     eraseContent(main); // ao abrir o quizz apaga todo layout da pagina inicial para renderizar a nova pagina
+    quizzLoading();
     const promise = axios.get(`${quizzesurl}/${quizzId}`);
     promise.then(quizzOpening); //se for sucesso abre o quizz
 }
@@ -511,11 +512,19 @@ let
     quizzPage;
 
 
+    function quizzLoading(){
+    content.innerHTML+=`
+    <div class="quizz-loading">
+           <img src="./assets/images/Spinner.gif">
+           <p> Carregando Quizz ... </p>
+        </div>
+    `
+    }
 
 //renderiza a página do quizz;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     console.log("sucesso");
-    content.innerHTML+=`
+    content.innerHTML =`
     <div class="quizz-page">
             <div class="quizz-cover">
             </div>
