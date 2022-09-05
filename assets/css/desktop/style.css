@@ -9,8 +9,7 @@
 }
 body {
     background-color: #FAFAFA;
-    
-    
+    font-family: 'Roboto';
 }
 
 .content {
@@ -129,12 +128,10 @@ body {
     font-weight: 700;
     font-size: 20px;
 }
-.user-title img{
-
-}
 
 .quizz-show {
     position: relative;
+    box-sizing: border-box;
 }
 
 .gradient {
@@ -159,11 +156,11 @@ body {
     bottom: 0;
     font-weight: 400;
     font-size: 19px;
-    line-height: 22px;
     color: white;
     bottom: 20px;
     left: 15px;
-    width: 290px;
+    word-break: break-all;
+    margin-right: 15px;
 }
 
 .quizz-maker-container {
