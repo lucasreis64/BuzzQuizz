@@ -155,10 +155,6 @@ function quizzMakerTwo() {
     questionsQuizz = document.querySelector('.info input:nth-child(3)').value;
     levelsQuizz = document.querySelector('.info input:nth-child(4)').value;
     eraseContent(main);
-    headerBuzz.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
     const questionStructure = `
     <div class="main">
     <div class="quizz-maker-container">
@@ -349,10 +345,6 @@ function quizzMakerThree() {
     getValues();
     console.log('Hello, World');
     eraseContent(main);
-    headerBuzz.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
     const questionStructure = `
     <div class="main">
     <div class="quizz-maker-container">
@@ -367,6 +359,11 @@ function quizzMakerThree() {
 
     content.innerHTML = questionStructure;
     const form = document.querySelector('.quizz-maker3 form');
+    const h2 = document.querySelector(".quizz-maker3 h2");
+    h2.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 
     for (let cont = 0; cont < levelsQuizz; cont++) {
         const questionNumber = document.createElement('div');
@@ -464,8 +461,21 @@ function getLevelValue() {
             };
         }
     }
+    quizzLoadingX();
     setTimeout(quizzUserPost,1000);
 }
+
+
+function quizzLoadingX() {
+    
+    main = document.querySelector('.main');
+    main.innerHTML=`
+    <div class="quizz-loading">
+           <img src="./assets/images/Spinner.gif">
+           <p> Carregando página ... </p>
+        </div>
+       `
+}    
 
 
 function addHTMLlevel(param) {
@@ -484,7 +494,7 @@ function addHTMLlevel(param) {
             oninvalid="this.setCustomValidity('Formato inválido')">
         <input type="text" placeholder="Descrição do nível" oninput="setCustomValidity('');" 
         pattern=".{30,}" required
-            oninvalid="this.setCustomValidity('Insira pelo menos caracteres!')">
+            oninvalid="this.setCustomValidity('Insira pelo menos 30 caracteres!')">
         </div>`
     param.appendChild(infoHidden);
 }
