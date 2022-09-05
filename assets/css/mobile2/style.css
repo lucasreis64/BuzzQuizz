@@ -57,7 +57,8 @@ body {
 }
 
 .quizzes-user {
-    width: 1050px;
+    margin: auto;
+    width: 85vw;
     height: 180px;
     box-sizing: border-box;
     border: 1px dashed #D5D5D5;
