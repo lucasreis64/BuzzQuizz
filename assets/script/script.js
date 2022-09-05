@@ -498,7 +498,7 @@ function quizzShowUser(image, text, id) {
     const h4 = document.createElement('h4');
     h4.innerText = 'Voltar para home'
     end.appendChild(h4);
-    h4.addEventListener('click', renderMainContent);
+    h4.addEventListener('click', location.reload);
 
     getUserQuizz (id);
 
