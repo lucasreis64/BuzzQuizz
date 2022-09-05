@@ -116,6 +116,10 @@ body {
     gap: 15px;
     width: 1050px;
 }
+.user-wrapper{
+    width: 1050px;
+    margin: auto;
+}
 .user-title{
     display: flex;
     gap: 17px;

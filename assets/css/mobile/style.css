@@ -8,11 +8,14 @@
     user-select: none;
 }
 body {
+    width: auto;
     background-color: #FAFAFA;
     font-family: 'Roboto';
+    overflow-x: hidden;
 }
 
 .content {
+    width: 100%;
     display: flex;
     font-family: 'Roboto';
     font-weight: 400;
@@ -50,12 +53,12 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 77px;
-    
+    padding-inline: 26px;
     
 }
 
 .quizzes-user {
-    width: 1050px;
+    margin: auto;
     height: 180px;
     box-sizing: border-box;
     border: 1px dashed #D5D5D5;
@@ -108,7 +111,11 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    width: 1050px;
+    width: 696px;
+}
+.user-wrapper{
+    width: 696px;
+    margin: auto;
 }
 .user-experience{
     display: flex;

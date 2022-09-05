@@ -10,6 +10,8 @@
 body {
     background-color: #FAFAFA;
     font-family: 'Roboto';
+    overflow-x: hidden;
+    padding-inline: 25px;
 }
 
 .content {
@@ -105,10 +107,16 @@ body {
 }
 
 .container-quizzes {
+    align-items: center;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    width: 1050px;
+    width: 100%;
+}
+.user-wrapper{
+    width: 100%;
+    margin: auto;
 }
 .user-experience{
     display: flex;
@@ -136,8 +144,8 @@ body {
 
 .gradient {
     background-image: linear-gradient(rgba(0, 0, 0, 0)60%, rgba(0, 0, 0, 1));
-    width: 340px;
-    height: 181px;
+    width: 85vw;
+    height: 53.24vw;
     border-radius: 5px;
     position: absolute;
     top: 0;
@@ -145,8 +153,8 @@ body {
 }
 
 .quizz-show img {
-    width: 340px;
-    height: 181px;
+    width: 85vw;
+    height: 53.24vw;
     border-radius: 5px;
     /* filter: brightness(95%); */
 }
