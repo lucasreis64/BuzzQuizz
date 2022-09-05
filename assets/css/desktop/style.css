@@ -9,8 +9,7 @@
 }
 body {
     background-color: #FAFAFA;
-    
-    
+    font-family: 'Roboto';
 }
 
 .content {
@@ -157,11 +156,11 @@ body {
     bottom: 0;
     font-weight: 400;
     font-size: 19px;
-    line-height: 22px;
     color: white;
     bottom: 20px;
     left: 15px;
-    word-wrap: break-word;
+    word-break: break-all;
+    margin-right: 15px;
 }
 
 .quizz-maker-container {

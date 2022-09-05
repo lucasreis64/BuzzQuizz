@@ -68,7 +68,7 @@ body{
 .quizz-show {
     position: relative;
     cursor: pointer;
-    
+    box-sizing: border-box;
 }
 
 .gradient {
