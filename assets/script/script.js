@@ -8,6 +8,21 @@ const contentCopy = content.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message, returned;
 let containUserQuizzes = []
+let quizzId;
+let  cover,title,questions,levels,header,child = 0,question,backgroundQuestion,answers;
+let quizzCover,quizzCoverImg, quizzTitle; // ?????
+let  quizzQuestions, questionContainer, questionTitle, answersDiv;
+let answersChildDiv, answerDiv,answerImage, answerP;
+let correctAnswer = 0;
+let quest,matte,correct,incorrect;
+let scrollToQuestion,contScroll;
+let percentage = 0;
+let userLevel;
+let levelContainer,allFinishedQuestions;
+let levelTitle, levelImage, levelText;
+let  buttons;
+let quizzPage;
+
 
 // --- pegando id do local storage--- 
 let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
@@ -19,47 +34,6 @@ if (storageID == null){
     arrayUserQuizzID = storageID;
     changeUserArea()
 }
-
-function getUserQuizz (id) {
-
-    console.log("idddddd",id)
-
-    arrayUserQuizzID.push(id);
-
-    let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
-    localStorage.setItem("id",stringIDs); // atualizar o storage
-    console.log ("storage", localStorage) 
-}
-
-//Rearrange da area do User
-function changeUserArea(){
-    document.querySelector(".user-wrapper").innerHTML = `
-    <div class="user-title">
-        <h2>Seus Quizzes</h2>
-        <img src="./assets/images/add.png">
-    </div>
-    <div class="user-experience"></div>
-    `
-    document.querySelector(".user-title img").addEventListener("click", quizzMaker);
-    const userArea = document.querySelector(".user-experience")
-    
-    for (let i = 0; i < arrayUserQuizzID.length; i++) {
-        const promise = axios.get(`${quizzesurl}/${arrayUserQuizzID[i]}`);
-        promise.then(printQuizzes)
-    }
-    
-    function printQuizzes(resp){
-        let data = resp.data;
-        containUserQuizzes.push(data)
-        image = data.image;
-        text = data.title;
-        id = data.id;
-        quizzShow(image, text, id, userArea);
-    }
-}
-
-
-
 //Pega as informações sobre os quizzes na API
 quizzGet();
 
@@ -128,6 +102,7 @@ function renderMainContent() {
     eraseContent(main);
     content.innerHTML = contentCopy;
     quizzGet();
+    location.reload()
 }
 
 //inicia a criação do quizz;
@@ -530,10 +505,47 @@ function quizzShowUser(image, text, id) {
 
 }
 
+function getUserQuizz (id) {
+
+    console.log("idddddd",id)
+
+    arrayUserQuizzID.push(id);
+
+    let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
+    localStorage.setItem("id",stringIDs); // atualizar o storage
+    console.log ("storage", localStorage) 
+}
+
+//Rearrange da area do User
+function changeUserArea(){
+    document.querySelector(".user-wrapper").innerHTML = `
+    <div class="user-title">
+        <h2>Seus Quizzes</h2>
+        <img src="./assets/images/add.png">
+    </div>
+    <div class="user-experience"></div>
+    `
+    document.querySelector(".user-title img").addEventListener("click", quizzMaker);
+    const userArea = document.querySelector(".user-experience")
+    
+    for (let i = 0; i < arrayUserQuizzID.length; i++) {
+        const promise = axios.get(`${quizzesurl}/${arrayUserQuizzID[i]}`);
+        promise.then(printQuizzes)
+    }
+    
+    function printQuizzes(resp){
+        let data = resp.data;
+        containUserQuizzes.push(data)
+        image = data.image;
+        text = data.title;
+        id = data.id;
+        quizzShow(image, text, id, userArea);
+    }
+}
+
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
 //pega as informações do quizz especifico pelo ID;
-let quizzId;
 function quizzDataGet() {
     quizzId = this.id;
     main = document.querySelector('.main');
@@ -557,7 +569,6 @@ function quizzLoading() {
 
 //renderiza a página do quizz;
 
-let  cover,title,questions,levels,header,child = 0,question,backgroundQuestion,answers;
 function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as informações do quizz
     console.log("sucesso");
     content.innerHTML =`
@@ -610,7 +621,6 @@ function quizzOpening(message) { // ao abrir o quizz recebe o array com todas as
 
 
 //criação da capa do quizz
-let quizzCover,quizzCoverImg, quizzTitle; // ?????
 function openedQuizzShowCover(cover, title) {
     quizzCover = document.querySelector('.quizz-cover');
     quizzCoverImg = document.createElement('img');
@@ -627,7 +637,6 @@ function openedQuizzShowCover(cover, title) {
 
 
 //criação das perguntas do quizz
-let  quizzQuestions, questionContainer, questionTitle, answersDiv;
 function openedQuizzShowQuestions(question, backgroundQuestion, child) {
     quizzQuestions = document.querySelector('.quizz-questions');
     questionContainer = document.createElement('div');
@@ -650,7 +659,6 @@ function openedQuizzShowQuestions(question, backgroundQuestion, child) {
 
 
 //criação das respostas do quizz
-let answersChildDiv, answerDiv,answerImage, answerP;
 function openedQuizzShowAnswers(answers, child) {
     answersChildDiv = document.querySelector(`.question-container:nth-child(${child}) .answers`);
     console.log("answersDiv", answersDiv)
@@ -675,10 +683,7 @@ function openedQuizzShowAnswers(answers, child) {
     }
 }
 //------------ JOGAR O QUIZZ---------------------//
-let correctAnswer = 0;
 
-
-let quest,matte,correct,incorrect;
 function playQuizz() {
 
     //verificar se a pergunta já foi respondida 
@@ -722,7 +727,6 @@ function playQuizz() {
 }
 
 // Função de scrollar para a próxima questão 
-let scrollToQuestion,contScroll;
 function scrollNextQuestion() {
     scrollToQuestion = document.querySelector(`.number${contScroll}`)
     console.log("scrolllll", scrollToQuestion)
@@ -737,7 +741,6 @@ function scrollNextQuestion() {
 
 // ----------------------- FIM DO QUIZZ----------------------------
 //Função para determianr a porcentagem de acertos
-let percentage = 0;
 
 function correctPercentage() {
     percentage = (correctAnswer / child) * 100;
@@ -746,7 +749,6 @@ function correctPercentage() {
 
 
 //fUNÇÃO PARA FINALIZAR O QUIZZ
-let levelContainer,allFinishedQuestions;
 
 function finishedQuizz() {
     allFinishedQuestions = document.querySelectorAll(".answered-question")
@@ -765,7 +767,6 @@ function finishedQuizz() {
 }
 
 // Função para determinar o level  de acordo com os acertos
-let userLevel;
 function selectLevel() {
     for (i = 0; i < levels.length; i++) {
         if (percentage >= levels[i].minValue) {
@@ -777,7 +778,7 @@ function selectLevel() {
 }
 
 //Função para renderizar a mensagem, iamgem e titulo do lvl
-let levelTitle, levelImage, levelText;
+
 
 function renderLevel() {
 
@@ -790,7 +791,7 @@ function renderLevel() {
 }
 
 // função para exibir a porcentagem e acertos e lvl
-let  buttons;
+
 function showLevel(levelTitle, levelImage, levelText) {
     levelContainer.style.display = "flex";
     buttons = document.querySelector(".quizz-buttons")
@@ -806,7 +807,7 @@ function showLevel(levelTitle, levelImage, levelText) {
 }
 
 // resetar todas váriaveis para reeinicar quizz
-let quizzPage;
+
 function reset(){
     quizzPage= document.querySelector(".content")
     quizzPage.innerHTML = ``;
