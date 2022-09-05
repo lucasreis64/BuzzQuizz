@@ -119,10 +119,13 @@ body {
     margin: auto;
 }
 .user-experience{
+    align-items: center;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    width: 1050px;
+    width: 100%;
+    margin: auto;
 }
 .user-title{
     display: flex;
