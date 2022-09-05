@@ -52,8 +52,6 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 77px;
-    
-    
 }
 
 .quizzes-user {
@@ -190,7 +188,7 @@ body {
 .info {
     padding: 21px 16px;
     padding-right: 20px;
-    width: 600px;
+    width: 90vw;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     background-color: #FFFFFF;
     display: flex;
@@ -251,7 +249,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .quizz-end button,form button,.quizz-maker-container input[type='submit'] {
-    width: 368px;
+    width: 92%;
     height: 54px;
     background-color: #EC362D;
     border-radius: 15px;
@@ -271,7 +269,7 @@ form{
 .question-number{
     display: flex;
     justify-content: space-between;
-    width: 601px;
+    width: 100%;
     height: 74px;
     padding: 27px 24px;
     box-sizing: border-box;
