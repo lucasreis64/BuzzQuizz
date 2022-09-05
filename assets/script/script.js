@@ -796,7 +796,7 @@ function showLevel(levelTitle, levelImage, levelText) {
     buttons = document.querySelector(".quizz-buttons")
     buttons.style.display = "flex";
 
-    levelContainer.innerHTML = `<p class = "level-title "> ${levelTitle} </p>
+    levelContainer.innerHTML = `<p class = "level-title "> Você acertou ${percentage}%! ${levelTitle} </p>
     <div class = "level-content"> 
         <img class="level-img"  src="${levelImage}">
         <p class="level-text">  ${levelText} </p>
