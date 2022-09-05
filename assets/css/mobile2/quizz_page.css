@@ -13,7 +13,11 @@
 }
 
 .quizz-cover img {
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
     height: 100%;
     object-fit: cover;
     filter: brightness(40%);
@@ -41,12 +45,15 @@
 }
 
 .question-container {
+    justify-content: center;
+    box-sizing: border-box;
     margin-top: 42px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 27px 0;
-    width: 759px;
+    height: auto;
+    width: 100%;
     background: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
@@ -54,7 +61,7 @@
 }
 
 .question {
-    width: 688.16px;
+    width: 100%;
     height: 137.99px;
     font-family: 'Roboto';
     font-style: normal;
@@ -62,17 +69,15 @@
     font-size: 23px;
     padding: 60px 30px;
     color: #FFFFFF;
-    word-wrap: break-word;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: normal;
+    white-space: wrap;
     text-align: center;
 }
 
 
 .answers {
     display: flex;
-    width: 688.16px;
+    width: 100%;
     flex-wrap: wrap;
     justify-content: space-between;
     box-sizing: border-box;
@@ -80,19 +85,13 @@
 
 .answer {
     margin-top: 20px;
-    width: 329.91px;
-    box-sizing: border-box;
-}
-
-.question-container {
-    width: 759px;
-    height: 676px;
+    width: 48%;
     box-sizing: border-box;
 }
 
 .answer img {
-    width: 329.91px;
-    height: 175.2px;
+    width: 100%;
+    height: 113px;
     object-fit: cover;
 }
 
@@ -100,14 +99,12 @@
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
-    font-size: 20px;
-    line-height: 23px;
+    font-size: 13px;
     color: #000000;
     margin-top: 7px;
-    width: 329.9px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;
+    word-break: break-all;
+    white-space: wrap;  
 }
 
 /*-------------- LEVEL------------*/
@@ -123,14 +120,14 @@
     flex-direction: column;
     align-items: center;
     padding: 27px 0;
-    width: 759px;
+    width: 100%;
     background: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     display: none;
 }
 
 .level-title {
-    width: 688.16px;
+    width: 100%;
     height: 137.99px;
     font-family: 'Roboto';
     font-style: normal;
@@ -144,17 +141,19 @@
     background-color: #EC362D;
     margin-bottom: 18px;
     word-break: break-all;
+    padding-inline: 16px;
 }
 
 .level-content {
     display: flex;
-    width: 688.16px;
+    flex-direction: column;
+    width: 100%;
     justify-content: space-between;
 }
 
 .level-img {
-    width: 364px;
-    margin-right: 21px;
+    width: 100%;
+    margin-bottom: 21px;
 }
 
 .level-text {
