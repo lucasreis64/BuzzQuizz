@@ -499,7 +499,14 @@ function getUserQuizz (id) {
 
 //Rearrange da area do User
 function changeUserArea(){
-    document.querySelector(".user-wrapper").innerHTML = `<div class="user-experience"></div>`
+    document.querySelector(".user-wrapper").innerHTML = `
+    <div class="user-title">
+        <h2>Seus Quizzes</h2>
+        <img src="./assets/images/add.png">
+    </div>
+    <div class="user-experience"></div>
+    `
+    document.querySelector(".user-title img").addEventListener("click", quizzMaker);
     const userArea = document.querySelector(".user-experience")
     
     for (let i = 0; i < arrayUserQuizzID.length; i++) {
@@ -507,7 +514,7 @@ function changeUserArea(){
         promise.then(printQuizzes)
     }
     function printQuizzes(resp){
-        let data = resp.data
+        let data = resp.data;
         image = data.image;
         text = data.title;
         id = data.id;

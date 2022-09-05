@@ -111,6 +111,27 @@ body {
     gap: 15px;
     width: 1050px;
 }
+.user-experience{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 1050px;
+}
+.user-title{
+    display: flex;
+    gap: 17px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.user-title h2{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+}
+.user-title img{
+
+}
 
 .quizz-show {
     position: relative;
