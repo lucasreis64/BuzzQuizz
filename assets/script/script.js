@@ -35,12 +35,12 @@ function renderQuizzInfo(message) {
         image = msg[cont].image;
         text = msg[cont].title;
         id = msg[cont].id;
-        quizzShow(image, text, id);
+        quizzShow(image, text, id, containerQuizzes);
     }
 }
 
 //cria a div que mostra o quiz na tela principal;
-function quizzShow(image, text, id) {
+function quizzShow(image, text, id, local) {
     const quizz = document.createElement('div');
     quizz.classList.add('quizz-show');
     quizz.id = id;
@@ -58,9 +58,10 @@ function quizzShow(image, text, id) {
     quizz.appendChild(gradient);
     quizz.appendChild(p);
 
-    containerQuizzes.appendChild(quizz);
+    local.appendChild(quizz);
     quizz.addEventListener('click', quizzDataGet);
 }
+
 
 //apaga o html do elemento escolhido pelo parametro passado;
 function eraseContent(mainn) {
@@ -482,31 +483,36 @@ if (storageID == null){
     arrayUserQuizzID = [];
 }else{
     arrayUserQuizzID = storageID;
+    changeUserArea()
 }
-
-
-
 
 function getUserQuizz (id) {
 
-console.log("idddddd",id)
+    console.log("idddddd",id)
 
-arrayUserQuizzID.push(id);
+    arrayUserQuizzID.push(id);
 
+    let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
+    localStorage.setItem("id",stringIDs); // atualizar o storage
+    console.log ("storage", localStorage) 
+}
 
-
-/* localStorage.clear(); */
-
-let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
-localStorage.setItem("id",stringIDs); // atualizar o storage
-console.log ("storage", localStorage) 
-
-
-/* localStorage.setItem("id",""+id);
-console.log("storage",localStorage);
-console.log("getitem",localStorage.getItem("id")); */
-
+//Rearrange da area do User
+function changeUserArea(){
+    document.querySelector(".user-wrapper").innerHTML = `<div class="user-experience"></div>`
+    const userArea = document.querySelector(".user-experience")
     
+    for (let i = 0; i < arrayUserQuizzID.length; i++) {
+        const promise = axios.get(`${quizzesurl}/${arrayUserQuizzID[i]}`);
+        promise.then(printQuizzes)
+    }
+    function printQuizzes(resp){
+        let data = resp.data
+        image = data.image;
+        text = data.title;
+        id = data.id;
+        quizzShow(image, text, id, userArea);
+    }
 }
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
