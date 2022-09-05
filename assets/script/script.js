@@ -10,7 +10,7 @@ let image, text, id, message, returned;
 let containUserQuizzes = []
 let quizzId;
 let  cover,title,questions,levels,header,child = 0,question,backgroundQuestion,answers;
-let quizzCover,quizzCoverImg, quizzTitle; // ?????
+let quizzCover,quizzCoverImg, quizzTitle; 
 let  quizzQuestions, questionContainer, questionTitle, answersDiv;
 let answersChildDiv, answerDiv,answerImage, answerP;
 let correctAnswer = 0;
@@ -24,6 +24,8 @@ let  buttons;
 let quizzPage;
 let contador = 0;
 
+//----- loading até carregar as informações
+quizzLoading();
 // --- pegando id do local storage--- 
 let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
 storageID = JSON.parse(storageID); 
@@ -35,10 +37,12 @@ if (storageID == null){
     changeUserArea()
 }
 //Pega as informações sobre os quizzes na API
+
 quizzGet();
 
-function quizzGet() {
 
+function quizzGet() {
+    
     containerQuizzes = document.querySelector('.container-quizzes')
 
     containerQuizzes = document.querySelector('.container-quizzes');
@@ -46,12 +50,13 @@ function quizzGet() {
     const promise = axios.get(quizzesurl);
     promise.then(renderQuizzInfo);
     promise.catch();
-
     addButtom.addEventListener("click", quizzMaker);
 }
 
 //renderiza o quiz na tela principal;
 function renderQuizzInfo(message) {
+    const loading = document.querySelector(".quizz-loading")
+    loading.style.display="none";
     msg = message.data;
     console.log(arrayUserQuizzID)
     for (let i = 0; i < arrayUserQuizzID.length; i++) {
@@ -66,10 +71,13 @@ function renderQuizzInfo(message) {
         id = msg[cont].id;
         quizzShow(image, text, id, containerQuizzes);
     }
+
+
 }
 
 //cria a div que mostra o quiz na tela principal;
 function quizzShow(image, text, id, local) {
+  
     const quizz = document.createElement('div');
     quizz.classList.add('quizz-show');
     quizz.id = id;
