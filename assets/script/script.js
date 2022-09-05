@@ -1,6 +1,7 @@
 let containerQuizzes = document.querySelector('.container-quizzes');
 let addButtom = document.querySelector('.quizzes-user button');
 let content = document.querySelector('.content');
+let headerBuzz = document.querySelector('.header');
 let main = document.querySelector('.main');
 let questionsQuizz, levelsQuizz, quizzUser = {},
     personalQuizzId = [];
@@ -154,7 +155,10 @@ function quizzMakerTwo() {
     questionsQuizz = document.querySelector('.info input:nth-child(3)').value;
     levelsQuizz = document.querySelector('.info input:nth-child(4)').value;
     eraseContent(main);
-
+    headerBuzz.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
     const questionStructure = `
     <div class="main">
     <div class="quizz-maker-container">
@@ -176,6 +180,7 @@ function quizzMakerTwo() {
         h3.innerText = `Pergunta ${cont+1}`;
         const img = document.createElement('img');
         img.src = `./assets/images/Vector.svg`;
+        img.setAttribute("data-identifier","expand");
         questionNumber.classList.add('question-number');
         questionNumber.appendChild(h3);
         questionNumber.appendChild(img);
@@ -239,6 +244,7 @@ function addHTML(param) {
     const h3 = param.querySelector('h3').innerText;
     const infoHidden = document.createElement('div');
     infoHidden.classList.add('info', 'hidden');
+    infoHidden.setAttribute("data-identifier","question-form");
     infoHidden.innerHTML += `
         <h3>${h3}</h3>
         <input type="text" placeholder="Texto da pergunta" oninput="setCustomValidity('');"
@@ -343,12 +349,16 @@ function quizzMakerThree() {
     getValues();
     console.log('Hello, World');
     eraseContent(main);
+    headerBuzz.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
     const questionStructure = `
     <div class="main">
     <div class="quizz-maker-container">
             <div class="quizz-maker3">
                 <h2>Agora, decida os níveis</h2>
-                <form action="#" onsubmit="getLevelValue(); setTimeout(quizzUserPost, 1000);">
+                <form action="#" onsubmit="return levelChecker();">
                 </form>
             </div>
     </div>
@@ -364,6 +374,7 @@ function quizzMakerThree() {
         h3.innerText = `Nível ${cont+1}`;
         const img = document.createElement('img');
         img.src = `./assets/images/Vector.svg`;
+        img.setAttribute("data-identifier","expand");
         questionNumber.classList.add('question-number');
         questionNumber.appendChild(h3);
         questionNumber.appendChild(img);
@@ -381,6 +392,46 @@ function quizzMakerThree() {
     input.addEventListener('click', hiddenChecker);
 }
 
+function levelChecker(){
+    let infoArray = document.querySelectorAll('.info');
+    let valuesArray = [];
+    let zero = 0,iguais=0;
+    for (let cont = 0; cont < levelsQuizz; cont++) {
+        const disgusting = infoArray[cont];
+        inputArray = disgusting.querySelectorAll('input');
+        const minPercentage = inputArray[1].value;
+        valuesArray[cont]=minPercentage;
+        if (minPercentage==0){
+            zero++;
+        }
+    }
+    for (let cont = 0; cont < levelsQuizz-1; cont++) {
+        for (let cont1 = cont+1; cont1 < levelsQuizz; cont1++){
+            if(valuesArray[cont]===valuesArray[cont1]){
+                iguais++;
+            }
+        }
+    }
+    console.log('zero:',zero,'  iguais: ', iguais);
+    if (zero==1 && iguais==0){
+        getLevelValue();
+        return true; 
+    }
+        
+    else if (zero==0 && iguais>0) {
+        alert('Um dos níveis precisa ter o valor mínimo igual a 0 (ZERO)!\nO valor dos níveis precisa ser diferente dos outros níveis!');
+        return false; 
+    }
+    else if (zero==0){
+        alert('Um dos níveis precisa ter o valor mínimo igual a 0 (ZERO)!');
+        return false; 
+    }
+    else if (iguais>0){
+        alert('O valor dos níveis precisa ser diferente dos outros níveis!');
+        return false; 
+    }
+}
+
 function getLevelValue() {
     let infoArray = document.querySelectorAll('.info');
     quizzUser.levels = [{
@@ -395,10 +446,6 @@ function getLevelValue() {
         const disgusting = infoArray[cont];
         console.log('okok0');
 
-        answersArray = disgusting.querySelectorAll('.answer');
-        console.log('okok1');
-        imagesArray = disgusting.querySelectorAll('.image');
-        console.log('okok2');
         inputArray = disgusting.querySelectorAll('input');
 
         console.log('inputArray[0]', inputArray[0].value);
@@ -417,6 +464,7 @@ function getLevelValue() {
             };
         }
     }
+    setTimeout(quizzUserPost,1000);
 }
 
 
@@ -424,6 +472,7 @@ function addHTMLlevel(param) {
     const h3 = param.querySelector('h3').innerText;
     const infoHidden = document.createElement('div');
     infoHidden.classList.add('info', 'hidden');
+    infoHidden.setAttribute("data-identifier","level");
     infoHidden.innerHTML += `
         <h3>${h3}</h3>
         <input type="text" placeholder="Título do nível" oninput="setCustomValidity('');"
@@ -506,10 +555,12 @@ function quizzShowUser(image, text, id) {
     const h4 = document.createElement('h4');
     h4.innerText = 'Voltar para home'
     end.appendChild(h4);
-    h4.addEventListener('click', location.reload);
-
+    h4.addEventListener('click', reloading);
     getUserQuizz (id);
+}
 
+function reloading(){
+    window.location.reload();
 }
 
 function getUserQuizz (id) {
