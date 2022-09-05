@@ -27,12 +27,12 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    top: 87px;
+    top: 50%;
+    transform: translateY(-50%);
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 39px;
-    line-height: 46px;
+    font-size: 24px;
     color: #FFFFFF;
     word-wrap: break-word;
 }
@@ -51,7 +51,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 27px 0;
+    padding-inline: 20px;
     height: auto;
     width: 100%;
     background: #FFFFFF;
@@ -61,15 +61,19 @@
 }
 
 .question {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 89px;
     width: 100%;
-    height: 137.99px;
+    padding-inline: 16px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
-    font-size: 23px;
-    padding: 60px 30px;
+    font-size: 19px;
     color: #FFFFFF;
-    word-break: normal;
+    word-break: break-all;
     white-space: wrap;
     text-align: center;
 }
@@ -164,10 +168,8 @@
     font-size: 19px;
     line-height: 25px;
     color: #484848;
-    width: 328px;
+    width: 100%;
     word-break: break-all;
-
-
 }
 
 .quizz-buttons{
