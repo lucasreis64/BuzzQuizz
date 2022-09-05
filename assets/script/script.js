@@ -22,7 +22,7 @@ let levelContainer,allFinishedQuestions;
 let levelTitle, levelImage, levelText;
 let  buttons;
 let quizzPage;
-
+let contador = 0;
 
 // --- pegando id do local storage--- 
 let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
@@ -437,7 +437,6 @@ function quizzUserPost() {
     promise.then(quizzMakerEnd);
 }
 
-let contador = 0;
 
 function quizzMakerEnd(response) {
     contador++;
