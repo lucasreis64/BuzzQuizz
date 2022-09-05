@@ -7,12 +7,62 @@ let questionsQuizz, levelsQuizz, quizzUser = {},
 const contentCopy = content.innerHTML;
 const quizzesurl = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 let image, text, id, message, returned;
+let containUserQuizzes = []
 
+// --- pegando id do local storage--- 
+let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
+storageID = JSON.parse(storageID); 
+let arrayUserQuizzID;
+if (storageID == null){
+    arrayUserQuizzID = [];
+}else{
+    arrayUserQuizzID = storageID;
+    changeUserArea()
+}
 
-quizzGet();
+function getUserQuizz (id) {
+
+    console.log("idddddd",id)
+
+    arrayUserQuizzID.push(id);
+
+    let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
+    localStorage.setItem("id",stringIDs); // atualizar o storage
+    console.log ("storage", localStorage) 
+}
+
+//Rearrange da area do User
+function changeUserArea(){
+    document.querySelector(".user-wrapper").innerHTML = `
+    <div class="user-title">
+        <h2>Seus Quizzes</h2>
+        <img src="./assets/images/add.png">
+    </div>
+    <div class="user-experience"></div>
+    `
+    document.querySelector(".user-title img").addEventListener("click", quizzMaker);
+    const userArea = document.querySelector(".user-experience")
+    
+    for (let i = 0; i < arrayUserQuizzID.length; i++) {
+        const promise = axios.get(`${quizzesurl}/${arrayUserQuizzID[i]}`);
+        promise.then(printQuizzes)
+    }
+    
+    function printQuizzes(resp){
+        let data = resp.data;
+        containUserQuizzes.push(data)
+        image = data.image;
+        text = data.title;
+        id = data.id;
+        quizzShow(image, text, id, userArea);
+    }
+}
+
 
 
 //Pega as informações sobre os quizzes na API
+quizzGet();
+
 function quizzGet() {
 
     containerQuizzes = document.querySelector('.container-quizzes')
@@ -29,6 +79,11 @@ function quizzGet() {
 //renderiza o quiz na tela principal;
 function renderQuizzInfo(message) {
     msg = message.data;
+    console.log(arrayUserQuizzID)
+    for (let i = 0; i < arrayUserQuizzID.length; i++) {
+        msg = msg.filter(function(el) { return el.id != arrayUserQuizzID[i]; });
+    }            
+
     console.log(msg);
 
     for (let cont = 0; cont < msg.length; cont++) {
@@ -475,52 +530,6 @@ function quizzShowUser(image, text, id) {
 
 }
 
-// --- pegando id do local storage--- 
-let storageID = localStorage.getItem ("id"); // pegar o que tem no storage ""
-storageID = JSON.parse(storageID); 
-let arrayUserQuizzID;
-if (storageID == null){
-    arrayUserQuizzID = [];
-}else{
-    arrayUserQuizzID = storageID;
-    changeUserArea()
-}
-
-function getUserQuizz (id) {
-
-    console.log("idddddd",id)
-
-    arrayUserQuizzID.push(id);
-
-    let stringIDs = JSON.stringify(arrayUserQuizzID); // tranformar o array em string 
-    localStorage.setItem("id",stringIDs); // atualizar o storage
-    console.log ("storage", localStorage) 
-}
-
-//Rearrange da area do User
-function changeUserArea(){
-    document.querySelector(".user-wrapper").innerHTML = `
-    <div class="user-title">
-        <h2>Seus Quizzes</h2>
-        <img src="./assets/images/add.png">
-    </div>
-    <div class="user-experience"></div>
-    `
-    document.querySelector(".user-title img").addEventListener("click", quizzMaker);
-    const userArea = document.querySelector(".user-experience")
-    
-    for (let i = 0; i < arrayUserQuizzID.length; i++) {
-        const promise = axios.get(`${quizzesurl}/${arrayUserQuizzID[i]}`);
-        promise.then(printQuizzes)
-    }
-    function printQuizzes(resp){
-        let data = resp.data;
-        image = data.image;
-        text = data.title;
-        id = data.id;
-        quizzShow(image, text, id, userArea);
-    }
-}
 
 // ------------------------ QUIZZ SELECIONADO --------------------------
 //pega as informações do quizz especifico pelo ID;
